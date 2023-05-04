@@ -10,26 +10,19 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface MiniPascalVisitor<T> extends ParseTreeVisitor<T> {
 	/**
-	 * Visit a parse tree produced by the {@code Programa}
+	 * Visit a parse tree produced by the {@code Program}
 	 * labeled alternative in {@link MiniPascalParser#prog}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitPrograma(MiniPascalParser.ProgramaContext ctx);
+	T visitProgram(MiniPascalParser.ProgramContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Bloque}
-	 * labeled alternative in {@link MiniPascalParser#block}.
+	 * Visit a parse tree produced by the {@code Block}
+	 * labeled alternative in {@link MiniPascalParser#code_block}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitBloque(MiniPascalParser.BloqueContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code ProgramEndMarker}
-	 * labeled alternative in {@link MiniPascalParser#program_end_marker}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitProgramEndMarker(MiniPascalParser.ProgramEndMarkerContext ctx);
+	T visitBlock(MiniPascalParser.BlockContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code VarDeclaration}
 	 * labeled alternative in {@link MiniPascalParser#var_declaration}.

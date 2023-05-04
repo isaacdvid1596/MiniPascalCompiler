@@ -1,10 +1,8 @@
 grammar MiniPascal;
 
-prog : PROGRAM IDENTIFIER ';' block #Programa
+prog : PROGRAM IDENTIFIER ';' code_block #Program
 ;
-block : var_declaration* function_declaration* compound_statement* program_end_marker #Bloque
-;
-program_end_marker : '.' #ProgramEndMarker
+code_block : var_declaration* function_declaration* compound_statement* PROGRAM_END #Block
 ;
 var_declaration : VAR (variable_declaration ';')* #VarDeclaration
 ;
@@ -113,6 +111,7 @@ GEQ:'>='
 //keyword tokens
 PROGRAM:'program'
 ;
+PROGRAM_END:'.';
 VAR:'var'
 ;
 ARRAY:'array'
@@ -182,5 +181,3 @@ COMMENT : '{' ~('{' | '}')* '}'
 ;
 WS : [ \t\r\n]+ -> skip
 ;
-
-

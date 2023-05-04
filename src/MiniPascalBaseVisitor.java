@@ -17,21 +17,14 @@ public class MiniPascalBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitPrograma(MiniPascalParser.ProgramaContext ctx) { return visitChildren(ctx); }
+	@Override public T visitProgram(MiniPascalParser.ProgramContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitBloque(MiniPascalParser.BloqueContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitProgramEndMarker(MiniPascalParser.ProgramEndMarkerContext ctx) { return visitChildren(ctx); }
+	@Override public T visitBlock(MiniPascalParser.BlockContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

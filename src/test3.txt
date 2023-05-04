@@ -1,0 +1,27 @@
+program myProgram;
+var
+  x: integer;
+ b: integer;
+function myFunction(a: integer, b: integer): integer;
+
+<<<<<<< HEAD
+=======
+function myFunction(a: integer, b: integer): integer;
+>>>>>>> master
+begin
+  c := a + b;
+  myFunction := c;
+end;
+end
+end.
+begin
+  x := 10;
+  writeln('x before function call: ', x);
+  x := myFunction(2, x);
+  writeln('x after function call: ', x);
+<<<<<<< HEAD
+end
+end.
+=======
+end.
+>>>>>>> master

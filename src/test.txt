@@ -1,0 +1,34 @@
+program test;
+
+var
+  nums: array[1..5] of integer;
+  a: array [0..1] of integer;
+  i: integer;
+  sum: integer;
+  saludo: string;
+  sal:char;
+begin
+  nums[1] := 2;
+  nums[2] := 4;
+  nums[3] := 6;
+  nums[4] := 8;
+  nums[5] := 10;
+  sum := 0;
+  mul := 1;
+  for i := 1 to 5 do
+    sum := sum + nums[i];
+    mul:= mul * 5;
+    divi1:= 4 div 4;
+    div2:= 4 / 4;
+    modulo:= 4 mod 2;
+    res:=mul>=sum;
+    res0:=mul<=sum;
+    res1:=modulo=divi1;
+    res2:=modulo<>divi1;
+    res3:= sum < mul;
+
+  write(sum);
+  saludo := 'hola';
+  sal := 'a';
+  read(saludo);
+end.

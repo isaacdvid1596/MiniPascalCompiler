@@ -1,0 +1,6 @@
+hello program;
+var name: array[0..5] of string;
+begin
+  write('What is your name?');
+  read(name);
+  write('Hello, ', name, '!');

@@ -2,7 +2,7 @@ grammar MiniPascal;
 
 prog : PROGRAM IDENTIFIER ';' code_block #Program
 ;
-code_block : var_declaration* function_declaration* compound_statement* PROGRAM_END #Block
+code_block : var_declaration* function_declaration* compound_statement* PROGRAM_END #Code_Block
 ;
 var_declaration : VAR (variable_declaration ';')* #VarDeclaration
 ;

@@ -11,7 +11,7 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 public interface MiniPascalVisitor<T> extends ParseTreeVisitor<T> {
 	/**
 	 * Visit a parse tree produced by the {@code Programa}
-	 * labeled alternative in {@link MiniPascalParser#program}.
+	 * labeled alternative in {@link MiniPascalParser#prog}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
@@ -57,13 +57,6 @@ public interface MiniPascalVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitIndexRange(MiniPascalParser.IndexRangeContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Indice}
-	 * labeled alternative in {@link MiniPascalParser#index}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIndice(MiniPascalParser.IndiceContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Integer}
 	 * labeled alternative in {@link MiniPascalParser#type}.
@@ -190,13 +183,6 @@ public interface MiniPascalVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFunctionBlock(MiniPascalParser.FunctionBlockContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code FunctionEndStatement}
-	 * labeled alternative in {@link MiniPascalParser#function_end_statement}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFunctionEndStatement(MiniPascalParser.FunctionEndStatementContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code ParameterList}
 	 * labeled alternative in {@link MiniPascalParser#parameter_list}.
 	 * @param ctx the parse tree
@@ -224,13 +210,6 @@ public interface MiniPascalVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitArgumentList(MiniPascalParser.ArgumentListContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code EndStatement}
-	 * labeled alternative in {@link MiniPascalParser#end_statement}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitEndStatement(MiniPascalParser.EndStatementContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Expresion}
 	 * labeled alternative in {@link MiniPascalParser#expression}.

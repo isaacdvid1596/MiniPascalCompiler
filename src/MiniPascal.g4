@@ -1,31 +1,27 @@
 grammar MiniPascal;
 
-program : PROGRAM IDENTIFIER ';' block #Programa
+prog : PROGRAM IDENTIFIER ';' block #Programa
 ;
 block : var_declaration* function_declaration* compound_statement* program_end_marker #Bloque
 ;
-//(var_declaration function_declaration compound_statement)* program_end_marker;
 program_end_marker : '.' #ProgramEndMarker
 ;
-var_declaration : 'var' (variable_declaration ';')* #VarDeclaration
+var_declaration : VAR (variable_declaration ';')* #VarDeclaration
 ;
 variable_declaration : IDENTIFIER ':' type (array_specifier)?
 ;
-array_specifier : 'array' '[' index_range ']' 'of' #ArraySpecifier
+array_specifier : ARRAY '[' index_range ']' OF #ArraySpecifier
 ;
 index_range : NUMBER '..' NUMBER #IndexRange
 ;
-index : NUMBER #Indice
-; //REMOVE?
-type : 'integer'    #Integer
-        | 'real'    #Real
-        | 'boolean' #Boolean
-        | 'char'    #Char
-        | 'string'  #String
-        | 'array' '[' index_range ']' 'of' type #Array
+type : INTEGER    #Integer
+        | REAL    #Real
+        | BOOLEAN #Boolean
+        | CHAR    #Char
+        | STRING  #String
+        | ARRAY '[' index_range ']' OF type #Array
         ;
-//array_type: 'array'
-compound_statement : 'begin' statement_list end_statement* #CompountStatement
+compound_statement : BEGIN statement_list END* #CompountStatement
 ;
 statement_list : statement (';'statement?)* #StatementList
 ;
@@ -41,23 +37,21 @@ statement : compound_statement
             ;
 assignment_statement : variable ':=' (expression|function_call) #AssignmentStatement
 ;
-if_statement : 'if' expression 'then' statement ('else' statement)? #IfStatement
+if_statement : IF expression THEN statement (ELSE statement)? #IfStatement
 ;
-while_statement : 'while' expression 'do' statement #WhileStatement
+while_statement : WHILE expression DO statement #WhileStatement
 ;
-for_statement : 'for' IDENTIFIER ':=' expression 'to' expression 'do' statement #ForStatement
+for_statement : FOR IDENTIFIER ':=' expression TO expression DO statement #ForStatement
 ;
-repeat_statement : 'repeat' statement_list 'until' expression #RepeatStatement
+repeat_statement : REPEAT statement_list UNTIL expression #RepeatStatement
 ;
-write_statement : 'write' '(' expression ')' #WriteStatement
+write_statement : WRITE '(' expression ')' #WriteStatement
 ;
-read_statement : 'read' '(' variable (',' variable)* ')' #ReadStatement
+read_statement : READ '(' variable (',' variable)* ')' #ReadStatement
 ;
-function_declaration: 'function' IDENTIFIER '(' parameter_list ')' ':' type ';' function_block #FunctionDeclaration
+function_declaration: FUNCTION IDENTIFIER '(' parameter_list ')' ':' type ';' function_block #FunctionDeclaration
 ;
-function_block: var_declaration* compound_statement function_end_statement #FunctionBlock
-;
-function_end_statement: 'end;' #FunctionEndStatement
+function_block: var_declaration* compound_statement FUNC_END #FunctionBlock
 ;
 parameter_list: (parameter_declaration (',' parameter_declaration)*)? #ParameterList
 ;
@@ -67,22 +61,20 @@ function_call : IDENTIFIER '(' argument_list? ')' #FunctionCall
 ;
 argument_list : (expression (',' expression)*) #ArgumentList
 ;
-end_statement: 'end' #EndStatement
+expression : simple_expression ((relop | AND | OR ) simple_expression)* ';'* #Expresion
 ;
-expression : simple_expression ((relop | 'and' | 'or') simple_expression)* ';'* #Expresion
-;
-simple_expression : term ((addop | 'or') term)* #SimpleExpression
+simple_expression : term ((addop | OR) term)* #SimpleExpression
 ;
 term : factor (mulop factor)* #Termino
 ;
-factor : IDENTIFIER (index_access | function_call | '(' expression ')' | ('not' factor))? #IdentifierTerminal
+factor : IDENTIFIER (index_access | function_call | '(' expression ')' | (NOT factor))? #IdentifierTerminal
         | NUMBER                #NumberTerminal
         | STRINGLITERAL               #StringTerminal
         | CHARACTER                  #CharTerminal
         | '(' expression ')'    #BetweenParentsExpression
-        | 'not' factor          #NotFactorOperator
-        | 'true'                #TrueOperator
-        | 'false'               #FalseOperator
+        | NOT factor          #NotFactorOperator
+        | TRUE                #TrueOperator
+        | FALSE               #FalseOperator
         ;
 variable : IDENTIFIER (index_access)? #VariableNonTerminal
 ;
@@ -95,6 +87,7 @@ addop : ADD | SUB #AddOperator
 mulop : MUL | DIV | MOD #MulOperator
 ;
 //operator tokens
+
 ADD:'+'
 ;
 SUB:'-'
@@ -136,6 +129,47 @@ STRING:'string'
 ;
 OF:'of'
 ;
+NOT:'not'
+;
+TRUE:'true'
+;
+FALSE:'false'
+;
+END:'end'
+;
+AND:'and'
+;
+OR:'or'
+;
+FUNC_END:'end;'
+;
+IF:'if'
+;
+THEN:'then'
+;
+ELSE:'else'
+;
+WHILE:'while'
+;
+DO:'do'
+;
+FOR:'for'
+;
+TO:'to'
+;
+REPEAT:'repeat'
+;
+UNTIL:'until'
+;
+WRITE:'write'
+;
+READ:'read'
+;
+FUNCTION:'function'
+;
+BEGIN:'begin'
+;
+//helper
 IDENTIFIER : [a-zA-Z][a-zA-Z0-9_]*
 ;
 NUMBER : [0-9]+ ('.' [0-9]+)?

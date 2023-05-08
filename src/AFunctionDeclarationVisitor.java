@@ -1,0 +1,2 @@
+public class AFunctionDeclarationVisitor extends MiniPascalBaseVisitor<AFunctionDeclarationNode>{
+}

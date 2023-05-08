@@ -1,24 +1,26 @@
 import java.util.List;
 
 public class ACodeBlockNode {
-    private List<VarDeclarationNode> varDeclarations;
-    private List<FunctionDeclarationNode> functionDeclarations;
-    private List<CompoundStatementNode> compoundStatements;
+    private List<AVarDeclarationNode> varDeclarations;
+    private List<AFunctionDeclarationNode> functionDeclarations;
+    private List<ACompoundStatementNode> compoundStatements;
+    private String programEndKeyword;
 
-    public ACodeBlockNode(List<VarDeclarationNode> varDeclarations, List<FunctionDeclarationNode> functionDeclarations, List<CompoundStatementNode> compoundStatements) {
+    public ACodeBlockNode(List<AVarDeclarationNode> varDeclarations, List<AFunctionDeclarationNode> functionDeclarations, List<ACompoundStatementNode> compoundStatements, String programEndKeyword) {
             this.varDeclarations = varDeclarations;
             this.functionDeclarations = functionDeclarations;
             this.compoundStatements = compoundStatements;
+            this.programEndKeyword = programEndKeyword;
     }
 
-    public List<VarDeclarationNode> getVarDeclarations() {
+    public List<AVarDeclarationNode> getVarDeclarations() {
         return varDeclarations;
     }
-    public List<FunctionDeclarationNode> getFunctionDeclarations() {
+    public List<AFunctionDeclarationNode> getFunctionDeclarations() {
         return functionDeclarations;
     }
 
-    public List<CompoundStatementNode> getCompoundStatements() {
+    public List<ACompoundStatementNode> getCompoundStatements() {
         return compoundStatements;
     }
 }

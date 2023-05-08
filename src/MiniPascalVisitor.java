@@ -17,12 +17,12 @@ public interface MiniPascalVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitProgram(MiniPascalParser.ProgramContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Block}
+	 * Visit a parse tree produced by the {@code Code_Block}
 	 * labeled alternative in {@link MiniPascalParser#code_block}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitBlock(MiniPascalParser.BlockContext ctx);
+	T visitCode_Block(MiniPascalParser.Code_BlockContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code VarDeclaration}
 	 * labeled alternative in {@link MiniPascalParser#var_declaration}.

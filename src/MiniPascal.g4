@@ -1,27 +1,27 @@
 grammar MiniPascal;
 
-prog : PROGRAM IDENTIFIER ';' code_block #Program
+prog : PROGRAM IDENTIFIER SEMICOLON code_block #Program
 ;
 code_block : var_declaration* function_declaration* compound_statement* PROGRAM_END #Code_Block
 ;
-var_declaration : VAR (variable_declaration ';')* #VarDeclaration
+var_declaration : VAR (variable_declaration SEMICOLON)* #VarDeclaration
 ;
-variable_declaration : IDENTIFIER ':' type (array_specifier)?
+variable_declaration : IDENTIFIER COLON type (array_specifier)?
 ;
-array_specifier : ARRAY '[' index_range ']' OF #ArraySpecifier
+array_specifier : ARRAY LBRACKET index_range RBRACKET OF type#ArraySpecifier
 ;
-index_range : NUMBER '..' NUMBER #IndexRange
+index_range : NUMBER DOTDOT NUMBER #IndexRange
 ;
 type : INTEGER    #Integer
         | REAL    #Real
         | BOOLEAN #Boolean
         | CHAR    #Char
         | STRING  #String
-        | ARRAY '[' index_range ']' OF type #Array
+        | array_specifier#Array
         ;
 compound_statement : BEGIN statement_list END* #CompountStatement
 ;
-statement_list : statement (';'statement?)* #StatementList
+statement_list : statement (SEMICOLON statement?)* #StatementList
 ;
 statement : compound_statement
             | assignment_statement
@@ -33,50 +33,50 @@ statement : compound_statement
             | read_statement
             | function_call
             ;
-assignment_statement : variable ':=' (expression|function_call) #AssignmentStatement
+assignment_statement : variable ASSIGN (expression|function_call) #AssignmentStatement
 ;
 if_statement : IF expression THEN statement (ELSE statement)? #IfStatement
 ;
 while_statement : WHILE expression DO statement #WhileStatement
 ;
-for_statement : FOR IDENTIFIER ':=' expression TO expression DO statement #ForStatement
+for_statement : FOR IDENTIFIER ASSIGN expression TO expression DO statement #ForStatement
 ;
 repeat_statement : REPEAT statement_list UNTIL expression #RepeatStatement
 ;
-write_statement : WRITE '(' expression ')' #WriteStatement
+write_statement : WRITE LPAREN expression RPAREN #WriteStatement
 ;
-read_statement : READ '(' variable (',' variable)* ')' #ReadStatement
+read_statement : READ LPAREN variable (DELIMITER variable)* RPAREN #ReadStatement
 ;
-function_declaration: FUNCTION IDENTIFIER '(' parameter_list ')' ':' type ';' function_block #FunctionDeclaration
+function_declaration: FUNCTION IDENTIFIER LPAREN parameter_list RPAREN COLON type SEMICOLON function_block #FunctionDeclaration
 ;
 function_block: var_declaration* compound_statement FUNC_END #FunctionBlock
 ;
-parameter_list: (parameter_declaration (',' parameter_declaration)*)? #ParameterList
+parameter_list: (parameter_declaration (DELIMITER parameter_declaration)*)? #ParameterList
 ;
-parameter_declaration: IDENTIFIER ':' type #ParameterDeclaration
+parameter_declaration: IDENTIFIER COLON type #ParameterDeclaration
 ;
-function_call : IDENTIFIER '(' argument_list? ')' #FunctionCall
+function_call : IDENTIFIER LPAREN argument_list? RPAREN #FunctionCall
 ;
-argument_list : (expression (',' expression)*) #ArgumentList
+argument_list : (expression (DELIMITER expression)*) #ArgumentList
 ;
-expression : simple_expression ((relop | AND | OR ) simple_expression)* ';'* #Expresion
+expression : simple_expression ((relop | AND | OR ) simple_expression)* SEMICOLON* #Expresion
 ;
 simple_expression : term ((addop | OR) term)* #SimpleExpression
 ;
 term : factor (mulop factor)* #Termino
 ;
-factor : IDENTIFIER (index_access | function_call | '(' expression ')' | (NOT factor))? #IdentifierTerminal
+factor : IDENTIFIER (index_access | function_call | LPAREN expression RPAREN | (NOT factor))? #IdentifierTerminal
         | NUMBER                #NumberTerminal
         | STRINGLITERAL               #StringTerminal
         | CHARACTER                  #CharTerminal
-        | '(' expression ')'    #BetweenParentsExpression
+        | LPAREN expression RPAREN    #BetweenParentsExpression
         | NOT factor          #NotFactorOperator
         | TRUE                #TrueOperator
         | FALSE               #FalseOperator
         ;
 variable : IDENTIFIER (index_access)? #VariableNonTerminal
 ;
-index_access : '[' expression (',' expression)* ']' #IndexAccess
+index_access : LBRACKET expression (DELIMITER expression)* RBRACKET #IndexAccess
 ;
 relop : EQ | NOTEQ | LT | GT | LEQ | GEQ #RelationalOperator
 ;
@@ -85,7 +85,6 @@ addop : ADD | SUB #AddOperator
 mulop : MUL | DIV | MOD #MulOperator
 ;
 //operator tokens
-
 ADD:'+'
 ;
 SUB:'-'
@@ -107,6 +106,24 @@ GT:'>'
 LEQ:'<='
 ;
 GEQ:'>='
+;
+SEMICOLON:';'
+;
+ASSIGN:':='
+;
+DOTDOT: '..'
+;
+COLON:':'
+;
+LPAREN:'('
+;
+RPAREN:')'
+;
+LBRACKET:'['
+;
+RBRACKET:']'
+;
+DELIMITER:','
 ;
 //keyword tokens
 PROGRAM:'program'

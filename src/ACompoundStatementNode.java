@@ -1,4 +1,4 @@
-public class ACompoundStatementNode {
+public class ACompoundStatementNode extends AStatementNode{
     private String beginKeyword;
     private AStatementListNode statementList;
     private String endKeyword;
@@ -12,5 +12,10 @@ public class ACompoundStatementNode {
     public ACompoundStatementNode(String beginKeyword, AStatementListNode statementList) {
         this.beginKeyword = beginKeyword;
         this.statementList = statementList;
+    }
+
+    @Override
+    public <T> T accept(AStatementVisitor visitor) {
+        return null;
     }
 }

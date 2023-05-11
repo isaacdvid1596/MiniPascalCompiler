@@ -1,4 +1,4 @@
-public class AAssignmentStatementNode {
+public class AAssignmentStatementNode extends AStatementNode{
     private AVariableNode variableNode;
     private String assignOperator;
     private AExpressionNode expressionNode;
@@ -14,5 +14,10 @@ public class AAssignmentStatementNode {
         this.variableNode = variableNode;
         this.assignOperator = assignOperator;
         this.functionCallNode = functionCallNode;
+    }
+
+    @Override
+    public <T> T accept(AStatementVisitor visitor) {
+        return null;
     }
 }

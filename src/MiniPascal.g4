@@ -65,7 +65,9 @@ simple_expression : term ((addop | OR) term)* #SimpleExpression
 ;
 term : factor (mulop factor)* #Termino
 ;
-factor : IDENTIFIER (index_access | function_call | LPAREN expression RPAREN | (NOT factor))? #IdentifierTerminal
+identifier_terminal: IDENTIFIER (index_access | function_call | LPAREN expression RPAREN | (NOT factor))?
+;
+factor : identifier_terminal #IdentifierTerminal
         | NUMBER                #NumberTerminal
         | STRINGLITERAL               #StringTerminal
         | CHARACTER                  #CharTerminal

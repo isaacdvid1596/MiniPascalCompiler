@@ -21,9 +21,4 @@ public class AIfStatementNode extends AStatementNode{
         this.elseKeyword = elseKeyword;
         this.optionalStatementNode = optionalStatementNode;
     }
-
-    @Override
-    public <T> T accept(AStatementVisitor visitor) {
-        return null;
-    }
 }

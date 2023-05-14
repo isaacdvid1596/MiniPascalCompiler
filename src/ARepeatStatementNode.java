@@ -11,9 +11,4 @@ public class ARepeatStatementNode extends AStatementNode{
         this.untilKeyword = untilKeyword;
         this.expressionNode = expressionNode;
     }
-
-    @Override
-    public <T> T accept(AStatementVisitor visitor) {
-        return null;
-    }
 }

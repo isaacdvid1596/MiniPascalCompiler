@@ -24,9 +24,4 @@ public class AReadStatementNode extends AStatementNode{
         this.variables = variables;
         this.rightParenthesis = rightParenthesis;
     }
-
-    @Override
-    public <T> T accept(AStatementVisitor visitor) {
-        return null;
-    }
 }

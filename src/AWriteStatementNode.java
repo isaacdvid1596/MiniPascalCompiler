@@ -11,9 +11,4 @@ public class AWriteStatementNode extends AStatementNode{
         this.expressionNode = expressionNode;
         this.rightParenthesis = rightParenthesis;
     }
-
-    @Override
-    public <T> T accept(AStatementVisitor visitor) {
-        return null;
-    }
 }

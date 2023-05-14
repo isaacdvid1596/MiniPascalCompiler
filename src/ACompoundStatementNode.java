@@ -13,9 +13,4 @@ public class ACompoundStatementNode extends AStatementNode{
         this.beginKeyword = beginKeyword;
         this.statementList = statementList;
     }
-
-    @Override
-    public <T> T accept(AStatementVisitor visitor) {
-        return null;
-    }
 }

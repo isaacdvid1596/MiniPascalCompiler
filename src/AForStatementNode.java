@@ -19,9 +19,4 @@ public class AForStatementNode extends AStatementNode {
         this.doKeyword = doKeyword;
         this.statementNode = statementNode;
     }
-
-    @Override
-    public <T> T accept(AStatementVisitor visitor) {
-        return null;
-    }
 }

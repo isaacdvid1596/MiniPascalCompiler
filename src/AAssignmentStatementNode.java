@@ -15,9 +15,4 @@ public class AAssignmentStatementNode extends AStatementNode{
         this.assignOperator = assignOperator;
         this.functionCallNode = functionCallNode;
     }
-
-    @Override
-    public <T> T accept(AStatementVisitor visitor) {
-        return null;
-    }
 }

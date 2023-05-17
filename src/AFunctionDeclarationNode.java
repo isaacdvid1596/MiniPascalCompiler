@@ -20,9 +20,4 @@ public class AFunctionDeclarationNode extends AStatementNode{
         this.semicolon = semicolon;
         this.functionBlockNode = functionBlockNode;
     }
-
-    @Override
-    public <T> T accept(AStatementVisitor visitor) {
-        return null;
-    }
 }

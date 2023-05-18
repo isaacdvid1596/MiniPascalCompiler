@@ -1,4 +1,11 @@
+import org.antlr.v4.runtime.tree.TerminalNode;
+
+import java.util.ArrayList;
+
 public class AStatementVisit extends MiniPascalBaseVisitor<AStatementNode>{
+
+    private ArrayList<String> delimiters = new ArrayList<>();
+    private ArrayList<AVariableNode> variables = new ArrayList<>();
 
     @Override
     public AStatementNode visitCompountStatement(MiniPascalParser.CompountStatementContext ctx) {
@@ -56,26 +63,73 @@ public class AStatementVisit extends MiniPascalBaseVisitor<AStatementNode>{
 
     @Override
     public AStatementNode visitForStatement(MiniPascalParser.ForStatementContext ctx) {
-        return super.visitForStatement(ctx);
+        String forKeyword = ctx.FOR().getText();
+        String identifier = ctx.IDENTIFIER().getText();
+        String assign = ctx.ASSIGN().getText();
+        AExpressionVisitor expressionVisitor = new AExpressionVisitor();
+        AExpressionNode firstExpressionNode = expressionVisitor.visit(ctx.expression(0));
+        String toKeyword = ctx.TO().getText();
+        AExpressionNode secondExpressionNode = expressionVisitor.visit(ctx.expression(1));
+        String doKeyword = ctx.DO().getText();
+        AStatementVisit aStatementVisit = new AStatementVisit();
+        AStatementNode aStatementNode = aStatementVisit.visit(ctx.statement());
+        return new AForStatementNode(forKeyword,identifier,assign,firstExpressionNode,toKeyword,secondExpressionNode,doKeyword,aStatementNode);
     }
 
     @Override
     public AStatementNode visitRepeatStatement(MiniPascalParser.RepeatStatementContext ctx) {
-        return super.visitRepeatStatement(ctx);
+        String repeatKeyword = ctx.REPEAT().getText();
+        AStatementListVisitor statementListVisitor = new AStatementListVisitor();
+        AStatementListNode statementListNode = statementListVisitor.visit(ctx.statement_list());
+        String untilKeyword = ctx.UNTIL().getText();
+        AExpressionVisitor expressionVisitor = new AExpressionVisitor();
+        AExpressionNode expressionNode = expressionVisitor.visit(ctx.expression());
+        return new ARepeatStatementNode(repeatKeyword,statementListNode,untilKeyword,expressionNode);
     }
 
     @Override
     public AStatementNode visitWriteStatement(MiniPascalParser.WriteStatementContext ctx) {
-        return super.visitWriteStatement(ctx);
+        String writeKeyword = ctx.WRITE().getText();
+        String leftParenthesis =  ctx.LPAREN().getText();
+        AExpressionVisitor expressionVisitor = new AExpressionVisitor();
+        AExpressionNode expressionNode = expressionVisitor.visit(ctx.expression());
+        String rightParenthesis = ctx.RPAREN().getText();
+        return new AWriteStatementNode(writeKeyword,leftParenthesis,expressionNode,rightParenthesis);
     }
 
     @Override
     public AStatementNode visitReadStatement(MiniPascalParser.ReadStatementContext ctx) {
-        return super.visitReadStatement(ctx);
+        String readKeyword = ctx.READ().getText();
+        String leftParenthesis = ctx.LPAREN().getText();
+        AVariableVisitor variableVisitor = new AVariableVisitor();
+        AVariableNode variableNode = variableVisitor.visit(ctx.variable(0));
+        if(ctx.DELIMITER() != null && ctx.variable() != null ){
+            for(TerminalNode delimiterNode: ctx.DELIMITER()){
+                String delimiter = delimiterNode.getText();
+                delimiters.add(delimiter);
+            }
+            for(MiniPascalParser.VariableContext variableContext:ctx.variable()){
+                AVariableNode variable = variableVisitor.visit(variableContext);
+                variables.add(variable);
+            }
+            String rightParenthesis = ctx.RPAREN().getText();
+            return new AReadStatementNode(readKeyword,leftParenthesis,variableNode,delimiters,variables,rightParenthesis);
+        }
+        String rightParenthesis = ctx.RPAREN().getText();
+        return new AReadStatementNode(readKeyword,leftParenthesis,variableNode,rightParenthesis);
     }
 
     @Override
     public AStatementNode visitFunctionCall(MiniPascalParser.FunctionCallContext ctx) {
-        return super.visitFunctionCall(ctx);
+        String identifier = ctx.IDENTIFIER().getText();
+        String leftParenthesis = ctx.LPAREN().getText();
+        if(ctx.argument_list()!=null){
+            AArgumentListVisitor argumentListVisitor = new AArgumentListVisitor();
+            AArgumentListNode argumentListNode = argumentListVisitor.visit(ctx.argument_list());
+            String rightParenthesis = ctx.RPAREN().getText();
+            return new AFunctionCallNode(identifier,leftParenthesis,argumentListNode,rightParenthesis);
+        }
+        String rightParenthesis = ctx.RPAREN().getText();
+        return new AFunctionCallNode(identifier,leftParenthesis,rightParenthesis);
     }
 }

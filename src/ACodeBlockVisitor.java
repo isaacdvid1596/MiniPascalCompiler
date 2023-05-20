@@ -17,7 +17,7 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode>{
         }
         if(ctx.function_declaration()!=null){
             for(MiniPascalParser.Function_declarationContext functionDeclarationContext: ctx.function_declaration()){
-                AFunctionDeclarationVisit aFunctionDeclarationVisit = new AFunctionDeclarationVisit();
+                AFunctionDeclarationVisitor aFunctionDeclarationVisit = new AFunctionDeclarationVisitor();
                 AFunctionDeclarationNode functionDeclarationNode = aFunctionDeclarationVisit.visit(functionDeclarationContext);
                 functionDeclarations.add(functionDeclarationNode);
             }

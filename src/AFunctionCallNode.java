@@ -1,4 +1,4 @@
-public class AFunctionCallNode {
+public class AFunctionCallNode extends AStatementNode{
     private String identifier;
     private String leftParenthesis;
     private AArgumentListNode argumentListNode;

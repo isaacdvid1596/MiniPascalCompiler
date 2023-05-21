@@ -4,21 +4,32 @@ import java.util.List;
 public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode>{
     private List<AVarDeclarationNode> varDeclarations = new ArrayList<>();
     private List<AFunctionDeclarationNode> functionDeclarations = new ArrayList<>();
-    private List<ACompoundStatementNode> compoundStatementNodes = new ArrayList<>();
+    private List<ACompoundStatementNode> compoundStatements = new ArrayList<>();
 
     @Override
     public ACodeBlockNode visitCode_Block(MiniPascalParser.Code_BlockContext ctx) {
-        for(MiniPascalParser.Var_declarationContext varDeclarationContext:ctx.var_declaration()){
-            varDeclarations.add(varDeclarationContext.accept(new AVarDeclarationVisitor()));
+        if(ctx.var_declaration()!=null){
+            for(MiniPascalParser.Var_declarationContext varDeclarationContext : ctx.var_declaration()){
+                AVarDeclarationVisitor varDeclarationVisitor = new AVarDeclarationVisitor();
+                AVarDeclarationNode varDeclarationNode = varDeclarationVisitor.visit(varDeclarationContext);
+                varDeclarations.add(varDeclarationNode);
+            }
         }
-        for(MiniPascalParser.Function_declarationContext functionDeclarationContext:ctx.function_declaration()){
-            functionDeclarations.add(functionDeclarationContext.accept(new AFunctionDeclarationVisitor()));
+        if(ctx.function_declaration()!=null){
+            for(MiniPascalParser.Function_declarationContext functionDeclarationContext: ctx.function_declaration()){
+                AFunctionDeclarationVisitor aFunctionDeclarationVisit = new AFunctionDeclarationVisitor();
+                AFunctionDeclarationNode functionDeclarationNode = aFunctionDeclarationVisit.visit(functionDeclarationContext);
+                functionDeclarations.add(functionDeclarationNode);
+            }
         }
-        for(MiniPascalParser.Compound_statementContext compoundStatementContext:ctx.compound_statement()){
-            compoundStatementNodes.add(compoundStatementContext.accept(new CompoundStatementVisitor()));
+        if(ctx.compound_statement()!=null){
+            for(MiniPascalParser.Compound_statementContext compoundStatementContext: ctx.compound_statement()){
+                ACompoundStatementVisitor compoundStatementVisitor = new ACompoundStatementVisitor();
+                ACompoundStatementNode compoundStatementNode = compoundStatementVisitor.visit(compoundStatementContext);
+                compoundStatements.add(compoundStatementNode);
+            }
         }
-        String programEnd = ctx.PROGRAM_END().getText();
-
-        return new ACodeBlockNode(varDeclarations,functionDeclarations,compoundStatementNodes,programEnd);
+        String programEndMarker = ctx.PROGRAM_END().getText();
+        return new ACodeBlockNode(varDeclarations,functionDeclarations,compoundStatements,programEndMarker);
     }
 }

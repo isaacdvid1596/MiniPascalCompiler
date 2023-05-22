@@ -10,7 +10,7 @@ public class ASimpleExpressionVisitor extends MiniPascalBaseVisitor<ASimpleExpre
     public ASimpleExpressionNode visitSimpleExpression(MiniPascalParser.SimpleExpressionContext ctx) {
         ATermVisitor termVisitor = new ATermVisitor();
         ATermNode termNode = termVisitor.visit(ctx.term(0));
-        if(ctx.addop()!=null){
+        if(ctx.addop()!=null ){
             return null;
         }else if(ctx.OR()!=null){
             return null;

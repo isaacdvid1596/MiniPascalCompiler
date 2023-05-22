@@ -15,5 +15,6 @@ public class ASimpleExpressionVisitor extends MiniPascalBaseVisitor<ASimpleExpre
         }else if(ctx.OR()!=null){
             return null;
         }
+        return null;
     }
 }

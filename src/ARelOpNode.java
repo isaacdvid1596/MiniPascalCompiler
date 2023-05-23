@@ -4,4 +4,9 @@ public class ARelOpNode {
     public ARelOpNode(String operator) {
         this.operator = operator;
     }
+
+    @Override
+    public String toString() {
+        return this.operator;
+    }
 }

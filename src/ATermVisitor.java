@@ -16,7 +16,13 @@ public class ATermVisitor extends MiniPascalBaseVisitor<ATermNode>{
                 AMulOpNode mulOpNode = mulOpVisitor.visit(mulopContext);
                 mulops.add(mulOpNode);
             }
+            for(MiniPascalParser.FactorContext factorContext: ctx.factor()){
+                AFactorVisitor aFactorVisitor = new AFactorVisitor();
+                AFactorNode aFactorNode = aFactorVisitor.visit(factorContext);
+                factors.add(aFactorNode);
+            }
+            return new ATermNode(factorNode,mulops,factors);
         }
-        return null;
+        return new ATermNode(factorNode);
     }
 }

@@ -5,8 +5,15 @@ public class ARelOpNode {
         this.operator = operator;
     }
 
+<<<<<<< HEAD
     @Override
     public String toString() {
         return this.operator;
     }
+=======
+    public String getOperator() { return operator; }
+
+    @Override
+    public String toString() { return this.operator; }
+>>>>>>> isaacbranch
 }

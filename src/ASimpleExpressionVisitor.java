@@ -11,6 +11,7 @@ public class ASimpleExpressionVisitor extends MiniPascalBaseVisitor<ASimpleExpre
     public ASimpleExpressionNode visitSimpleExpression(MiniPascalParser.SimpleExpressionContext ctx) {
         ATermVisitor termVisitor = new ATermVisitor();
         ATermNode termNode = termVisitor.visit(ctx.term(0));
+<<<<<<< HEAD
         if(ctx.addop()!=null && ctx.term()!=null){
             for(MiniPascalParser.AddopContext addopContext : ctx.addop()){
                 AAddOperatorVisitor addOperatorVisitor = new AAddOperatorVisitor();
@@ -35,6 +36,12 @@ public class ASimpleExpressionVisitor extends MiniPascalBaseVisitor<ASimpleExpre
                 terms.add(secondTermNode);
             }
             return new ASimpleExpressionNode(termNode,ors,terms);
+=======
+        if(ctx.addop()!=null ){
+            return null;
+        }else if(ctx.OR()!=null){
+            return null;
+>>>>>>> isaacbranch
         }
         return new ASimpleExpressionNode(termNode);
     }

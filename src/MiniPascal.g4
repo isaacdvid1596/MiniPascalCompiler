@@ -65,16 +65,16 @@ simple_expression : term ((addop | OR) term)* #SimpleExpression
 ;
 term : factor (mulop factor)* #Termino
 ;
-identifier_terminal: IDENTIFIER (index_access | function_call | LPAREN expression RPAREN | (NOT factor))?
+identifier_terminal: IDENTIFIER (index_access | function_call | LPAREN expression RPAREN | (NOT factor))? #IdentifierTerminal
 ;
-factor : identifier_terminal #IdentifierTerminal
-        | NUMBER                #NumberTerminal
-        | STRINGLITERAL               #StringTerminal
-        | CHARACTER                  #CharTerminal
-        | LPAREN expression RPAREN    #BetweenParentsExpression
-        | NOT factor          #NotFactorOperator
-        | TRUE                #TrueOperator
-        | FALSE               #FalseOperator
+factor : identifier_terminal 
+        | NUMBER                
+        | STRINGLITERAL               
+        | CHARACTER                  
+        | LPAREN expression RPAREN    
+        | NOT factor          
+        | TRUE                
+        | FALSE              
         ;
 variable : IDENTIFIER (index_access)? #VariableNonTerminal
 ;

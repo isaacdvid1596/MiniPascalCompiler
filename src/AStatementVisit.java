@@ -8,58 +8,86 @@ public class AStatementVisit extends MiniPascalBaseVisitor<AStatementNode>{
     private ArrayList<AVariableNode> variables = new ArrayList<>();
 
     @Override
-    public AStatementNode visitCompountStatement(MiniPascalParser.CompountStatementContext ctx) {
-        String beginKeyword = ctx.BEGIN().getText();
-        AStatementListVisitor aStatementListVisitor = new AStatementListVisitor();
-        AStatementListNode statementListNode = aStatementListVisitor.visit(ctx.statement_list());
-        String endKeyword = ctx.END().toString();
-        if(endKeyword.equals("")){
-            return new ACompoundStatementNode(beginKeyword,statementListNode);
+    public AStatementNode visitStatement(MiniPascalParser.StatementContext ctx) {
+        if(ctx.compound_statement()!=null){
+            ACompoundStatementVisitor aCompoundStatementVisitor = new ACompoundStatementVisitor();
+            ACompoundStatementNode compoundStatementNode = aCompoundStatementVisitor.visit(ctx.compound_statement());
+            return compoundStatementNode;
+        }else if(ctx.assignment_statement()!=null){
+            AAssignmentStatementVisitor assignmentStatementVisitor = new AAssignmentStatementVisitor();
+            AAssignmentStatementNode assignmentStatementNode = assignmentStatementVisitor.visit(ctx.assignment_statement());
+            return assignmentStatementNode;
+        }else if(ctx.if_statement()!=null){
+            AIfStatementVisitor ifStatementVisitor = new AIfStatementVisitor();
+            AIfStatementNode ifStatementNode = ifStatementVisitor.visit(ctx.if_statement());
+            return ifStatementNode;
+        }else if(ctx.while_statement()!=null){
+            AWhileStatementVisitor whileStatementVisitor = new AWhileStatementVisitor();
+            AWhileStatementNode whileStatementNode = whileStatementVisitor.visit(ctx.while_statement());
+            return whileStatementNode;
+        } else if(ctx.for_statement()!=null){
+            AForStatementVisitor forStatementVisitor = new AForStatementVisitor();
+            AForStatementNode forStatementNode = forStatementVisitor.visit(ctx.for_statement());
+            return forStatementNode;
+        }else if(ctx.repeat_statement()!=null){
+
         }
-        return new ACompoundStatementNode(beginKeyword, statementListNode, endKeyword);
+        return null;
     }
 
-    @Override
-    public AStatementNode visitAssignmentStatement(MiniPascalParser.AssignmentStatementContext ctx) {
-        AVariableVisitor aVariableVisitor = new AVariableVisitor();
-        AVariableNode variableNode = aVariableVisitor.visit(ctx.variable());
-        String assignKeyword = ctx.ASSIGN().getText();
-        //ver si es expression o function
-        AExpressionVisitor expressionVisitor = new AExpressionVisitor();
-        AExpressionNode expressionNode = expressionVisitor.visit(ctx.expression());
-        AFunctionCallVisitor functionCallVisitor = new AFunctionCallVisitor();
-        AFunctionCallNode functionCallNode = functionCallVisitor.visit(ctx.function_call());
-        if(expressionNode != null){
-            return new AAssignmentStatementNode(variableNode,assignKeyword,expressionNode);
-        }
-        return new AAssignmentStatementNode(variableNode,assignKeyword,functionCallNode);
-    }
+//    @Override
+//    public AStatementNode visitCompountStatement(MiniPascalParser.CompountStatementContext ctx) {
+//        String beginKeyword = ctx.BEGIN().getText();
+//        AStatementListVisitor aStatementListVisitor = new AStatementListVisitor();
+//        AStatementListNode statementListNode = aStatementListVisitor.visit(ctx.statement_list());
+//        String endKeyword = ctx.END().toString();
+//        if(endKeyword.equals("")){
+//            return new ACompoundStatementNode(beginKeyword,statementListNode);
+//        }
+//        return new ACompoundStatementNode(beginKeyword, statementListNode, endKeyword);
+//    }
+//
+//    @Override
+//    public AStatementNode visitAssignmentStatement(MiniPascalParser.AssignmentStatementContext ctx) {
+//        AVariableVisitor aVariableVisitor = new AVariableVisitor();
+//        AVariableNode variableNode = aVariableVisitor.visit(ctx.variable());
+//        String assignKeyword = ctx.ASSIGN().getText();
+//        //ver si es expression o function
+//        AExpressionVisitor expressionVisitor = new AExpressionVisitor();
+//        AExpressionNode expressionNode = expressionVisitor.visit(ctx.expression());
+//        AFunctionCallVisitor functionCallVisitor = new AFunctionCallVisitor();
+//        AFunctionCallNode functionCallNode = functionCallVisitor.visit(ctx.function_call());
+//        if(expressionNode != null){
+//            return new AAssignmentStatementNode(variableNode,assignKeyword,expressionNode);
+//        }
+//        return new AAssignmentStatementNode(variableNode,assignKeyword,functionCallNode);
+//    }
 
-    @Override
-    public AStatementNode visitIfStatement(MiniPascalParser.IfStatementContext ctx) {
-        String ifKeyword = ctx.IF().getText();
-        AExpressionVisitor expressionVisitor = new AExpressionVisitor();
-        AExpressionNode expressionNode = expressionVisitor.visit(ctx.expression());
-        String thenKeyword = ctx.THEN().getText();
-        AStatementNode statementNode = this.visit(ctx.statement(0));
-        if(ctx.ELSE()!=null){
-            String elseKeyword = ctx.ELSE().getText();
-            AStatementNode elseStatementNode = visit(ctx.statement(1));
-            return new AIfStatementNode(ifKeyword,expressionNode,thenKeyword,statementNode,elseKeyword,elseStatementNode);
-        }
-        return new AIfStatementNode(ifKeyword,expressionNode,thenKeyword,statementNode);
-    }
+//    @Override
+//    public AStatementNode visitIfStatement(MiniPascalParser.IfStatementContext ctx) {
+//        String ifKeyword = ctx.IF().getText();
+//        AExpressionVisitor expressionVisitor = new AExpressionVisitor();
+//        AExpressionNode expressionNode = expressionVisitor.visit(ctx.expression());
+//        String thenKeyword = ctx.THEN().getText();
+//        AStatementNode statementNode = this.visit(ctx.statement(0));
+//        if(ctx.ELSE()!=null){
+//            String elseKeyword = ctx.ELSE().getText();
+//            AStatementNode elseStatementNode = visit(ctx.statement(1));
+//            return new AIfStatementNode(ifKeyword,expressionNode,thenKeyword,statementNode,elseKeyword,elseStatementNode);
+//        }
+//        return new AIfStatementNode(ifKeyword,expressionNode,thenKeyword,statementNode);
+//    }
 
-    @Override
-    public AStatementNode visitWhileStatement(MiniPascalParser.WhileStatementContext ctx) {
-        String whileKeyword = ctx.WHILE().getText();
-        AExpressionVisitor expressionVisitor = new AExpressionVisitor();
-        AExpressionNode expressionNode = expressionVisitor.visit(ctx.expression());
-        String doKeyword = ctx.DO().getText();
-        AStatementVisit statementVisitor = new AStatementVisit();
-        AStatementNode statementNode = statementVisitor.visit(ctx.statement());
-        return new AWhileStatementNode(whileKeyword,expressionNode,doKeyword,statementNode);
-    }
+//    @Override
+//    public AStatementNode visitWhileStatement(MiniPascalParser.WhileStatementContext ctx) {
+//        String whileKeyword = ctx.WHILE().getText();
+//        AExpressionVisitor expressionVisitor = new AExpressionVisitor();
+//        AExpressionNode expressionNode = expressionVisitor.visit(ctx.expression());
+//        String doKeyword = ctx.DO().getText();
+//        AStatementVisit statementVisitor = new AStatementVisit();
+//        AStatementNode statementNode = statementVisitor.visit(ctx.statement());
+//        return new AWhileStatementNode(whileKeyword,expressionNode,doKeyword,statementNode);
+//    }
 
     @Override
     public AStatementNode visitForStatement(MiniPascalParser.ForStatementContext ctx) {

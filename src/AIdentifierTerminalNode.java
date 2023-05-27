@@ -1,4 +1,4 @@
-public class AIdentifierTerminal {
+public class AIdentifierTerminalNode extends AFactorNode{
     private String identifier;
     private AIndexAccessNode indexAccessNode;
     private AFunctionCallNode functionCallNode;
@@ -8,28 +8,28 @@ public class AIdentifierTerminal {
     private String notKeyword;
     private AFactorNode factor;
 
-    public AIdentifierTerminal(String identifier) {
+    public AIdentifierTerminalNode(String identifier) {
         this.identifier = identifier;
     }
 
-    public AIdentifierTerminal(String identifier, AIndexAccessNode indexAccessNode) {
+    public AIdentifierTerminalNode(String identifier, AIndexAccessNode indexAccessNode) {
         this.identifier = identifier;
         this.indexAccessNode = indexAccessNode;
     }
 
-    public AIdentifierTerminal(String identifier, AFunctionCallNode functionCallNode) {
+    public AIdentifierTerminalNode(String identifier, AFunctionCallNode functionCallNode) {
         this.identifier = identifier;
         this.functionCallNode = functionCallNode;
     }
 
-    public AIdentifierTerminal(String identifier, String leftParenthesis, AExpressionNode expressionNode, String rightParenthesis) {
+    public AIdentifierTerminalNode(String identifier, String leftParenthesis, AExpressionNode expressionNode, String rightParenthesis) {
         this.identifier = identifier;
         this.leftParenthesis = leftParenthesis;
         this.expressionNode = expressionNode;
         this.rightParenthesis = rightParenthesis;
     }
 
-    public AIdentifierTerminal(String identifier, String notKeyword, AFactorNode factor) {
+    public AIdentifierTerminalNode(String identifier, String notKeyword, AFactorNode factor) {
         this.identifier = identifier;
         this.notKeyword = notKeyword;
         this.factor = factor;

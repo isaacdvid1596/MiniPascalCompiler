@@ -225,67 +225,18 @@ public interface MiniPascalVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitTermino(MiniPascalParser.TerminoContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MiniPascalParser#identifier_terminal}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIdentifier_terminal(MiniPascalParser.Identifier_terminalContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code IdentifierTerminal}
-	 * labeled alternative in {@link MiniPascalParser#factor}.
+	 * labeled alternative in {@link MiniPascalParser#identifier_terminal}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitIdentifierTerminal(MiniPascalParser.IdentifierTerminalContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code NumberTerminal}
-	 * labeled alternative in {@link MiniPascalParser#factor}.
+	 * Visit a parse tree produced by {@link MiniPascalParser#factor}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitNumberTerminal(MiniPascalParser.NumberTerminalContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code StringTerminal}
-	 * labeled alternative in {@link MiniPascalParser#factor}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitStringTerminal(MiniPascalParser.StringTerminalContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code CharTerminal}
-	 * labeled alternative in {@link MiniPascalParser#factor}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitCharTerminal(MiniPascalParser.CharTerminalContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code BetweenParentsExpression}
-	 * labeled alternative in {@link MiniPascalParser#factor}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBetweenParentsExpression(MiniPascalParser.BetweenParentsExpressionContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code NotFactorOperator}
-	 * labeled alternative in {@link MiniPascalParser#factor}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNotFactorOperator(MiniPascalParser.NotFactorOperatorContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code TrueOperator}
-	 * labeled alternative in {@link MiniPascalParser#factor}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitTrueOperator(MiniPascalParser.TrueOperatorContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code FalseOperator}
-	 * labeled alternative in {@link MiniPascalParser#factor}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFalseOperator(MiniPascalParser.FalseOperatorContext ctx);
+	T visitFactor(MiniPascalParser.FactorContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code VariableNonTerminal}
 	 * labeled alternative in {@link MiniPascalParser#variable}.

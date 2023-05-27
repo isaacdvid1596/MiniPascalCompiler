@@ -3,8 +3,39 @@ import java.util.ArrayList;
 public class AExpressionNode {
     private ASimpleExpressionNode aSimpleExpressionNode;
     private ArrayList<ARelOpNode> relOp;
-    private ArrayList<String> andKeyword;
-    private ArrayList<String> orKeyword;
+    //deals with erasure issues
+    private AAndKeywordWrapper andKeyword;
+    private AOrKeywordWrapper orKeyword;
     private ArrayList<ASimpleExpressionNode> aSimpleExpressionNodes;
-    private ArrayList<String> semicolon;
+    private ArrayList<String> semicolons;
+    private String semicolon;
+
+    public AExpressionNode(ASimpleExpressionNode aSimpleExpressionNode) {
+        this.aSimpleExpressionNode = aSimpleExpressionNode;
+    }
+    public AExpressionNode(ASimpleExpressionNode aSimpleExpressionNode, String semicolon) {
+        this.aSimpleExpressionNode = aSimpleExpressionNode;
+        this.semicolon = semicolon;
+    }
+
+    public AExpressionNode(ASimpleExpressionNode aSimpleExpressionNode, ArrayList<ARelOpNode> relOp, ArrayList<ASimpleExpressionNode> aSimpleExpressionNodes, ArrayList<String> semicolon) {
+        this.aSimpleExpressionNode = aSimpleExpressionNode;
+        this.relOp = relOp;
+        this.aSimpleExpressionNodes = aSimpleExpressionNodes;
+        this.semicolons = semicolon;
+    }
+
+    public AExpressionNode(ASimpleExpressionNode aSimpleExpressionNode, AAndKeywordWrapper andKeyword, ArrayList<ASimpleExpressionNode> aSimpleExpressionNodes, ArrayList<String> semicolon) {
+        this.aSimpleExpressionNode = aSimpleExpressionNode;
+        this.andKeyword = andKeyword;
+        this.aSimpleExpressionNodes = aSimpleExpressionNodes;
+        this.semicolons = semicolon;
+    }
+
+    public AExpressionNode(ASimpleExpressionNode aSimpleExpressionNode, AOrKeywordWrapper orKeyword, ArrayList<ASimpleExpressionNode> aSimpleExpressionNodes, ArrayList<String> semicolon) {
+        this.aSimpleExpressionNode = aSimpleExpressionNode;
+        this.orKeyword = orKeyword;
+        this.aSimpleExpressionNodes = aSimpleExpressionNodes;
+        this.semicolons = semicolon;
+    }
 }

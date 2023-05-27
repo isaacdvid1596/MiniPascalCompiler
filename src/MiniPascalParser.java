@@ -2137,6 +2137,18 @@ public class MiniPascalParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class Identifier_terminalContext extends ParserRuleContext {
+		public Identifier_terminalContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_identifier_terminal; }
+	 
+		public Identifier_terminalContext() { }
+		public void copyFrom(Identifier_terminalContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class IdentifierTerminalContext extends Identifier_terminalContext {
 		public TerminalNode IDENTIFIER() { return getToken(MiniPascalParser.IDENTIFIER, 0); }
 		public Index_accessContext index_access() {
 			return getRuleContext(Index_accessContext.class,0);
@@ -2153,13 +2165,10 @@ public class MiniPascalParser extends Parser {
 		public FactorContext factor() {
 			return getRuleContext(FactorContext.class,0);
 		}
-		public Identifier_terminalContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_identifier_terminal; }
+		public IdentifierTerminalContext(Identifier_terminalContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MiniPascalVisitor ) return ((MiniPascalVisitor<? extends T>)visitor).visitIdentifier_terminal(this);
+			if ( visitor instanceof MiniPascalVisitor ) return ((MiniPascalVisitor<? extends T>)visitor).visitIdentifierTerminal(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -2168,6 +2177,7 @@ public class MiniPascalParser extends Parser {
 		Identifier_terminalContext _localctx = new Identifier_terminalContext(_ctx, getState());
 		enterRule(_localctx, 52, RULE_identifier_terminal);
 		try {
+			_localctx = new IdentifierTerminalContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(290);
@@ -2252,102 +2262,30 @@ public class MiniPascalParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class FactorContext extends ParserRuleContext {
-		public FactorContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_factor; }
-	 
-		public FactorContext() { }
-		public void copyFrom(FactorContext ctx) {
-			super.copyFrom(ctx);
-		}
-	}
-	@SuppressWarnings("CheckReturnValue")
-	public static class StringTerminalContext extends FactorContext {
-		public TerminalNode STRINGLITERAL() { return getToken(MiniPascalParser.STRINGLITERAL, 0); }
-		public StringTerminalContext(FactorContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MiniPascalVisitor ) return ((MiniPascalVisitor<? extends T>)visitor).visitStringTerminal(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	@SuppressWarnings("CheckReturnValue")
-	public static class CharTerminalContext extends FactorContext {
-		public TerminalNode CHARACTER() { return getToken(MiniPascalParser.CHARACTER, 0); }
-		public CharTerminalContext(FactorContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MiniPascalVisitor ) return ((MiniPascalVisitor<? extends T>)visitor).visitCharTerminal(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	@SuppressWarnings("CheckReturnValue")
-	public static class TrueOperatorContext extends FactorContext {
-		public TerminalNode TRUE() { return getToken(MiniPascalParser.TRUE, 0); }
-		public TrueOperatorContext(FactorContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MiniPascalVisitor ) return ((MiniPascalVisitor<? extends T>)visitor).visitTrueOperator(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	@SuppressWarnings("CheckReturnValue")
-	public static class FalseOperatorContext extends FactorContext {
-		public TerminalNode FALSE() { return getToken(MiniPascalParser.FALSE, 0); }
-		public FalseOperatorContext(FactorContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MiniPascalVisitor ) return ((MiniPascalVisitor<? extends T>)visitor).visitFalseOperator(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	@SuppressWarnings("CheckReturnValue")
-	public static class NotFactorOperatorContext extends FactorContext {
-		public TerminalNode NOT() { return getToken(MiniPascalParser.NOT, 0); }
-		public FactorContext factor() {
-			return getRuleContext(FactorContext.class,0);
-		}
-		public NotFactorOperatorContext(FactorContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MiniPascalVisitor ) return ((MiniPascalVisitor<? extends T>)visitor).visitNotFactorOperator(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	@SuppressWarnings("CheckReturnValue")
-	public static class IdentifierTerminalContext extends FactorContext {
 		public Identifier_terminalContext identifier_terminal() {
 			return getRuleContext(Identifier_terminalContext.class,0);
 		}
-		public IdentifierTerminalContext(FactorContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MiniPascalVisitor ) return ((MiniPascalVisitor<? extends T>)visitor).visitIdentifierTerminal(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	@SuppressWarnings("CheckReturnValue")
-	public static class BetweenParentsExpressionContext extends FactorContext {
+		public TerminalNode NUMBER() { return getToken(MiniPascalParser.NUMBER, 0); }
+		public TerminalNode STRINGLITERAL() { return getToken(MiniPascalParser.STRINGLITERAL, 0); }
+		public TerminalNode CHARACTER() { return getToken(MiniPascalParser.CHARACTER, 0); }
 		public TerminalNode LPAREN() { return getToken(MiniPascalParser.LPAREN, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
 		public TerminalNode RPAREN() { return getToken(MiniPascalParser.RPAREN, 0); }
-		public BetweenParentsExpressionContext(FactorContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MiniPascalVisitor ) return ((MiniPascalVisitor<? extends T>)visitor).visitBetweenParentsExpression(this);
-			else return visitor.visitChildren(this);
+		public TerminalNode NOT() { return getToken(MiniPascalParser.NOT, 0); }
+		public FactorContext factor() {
+			return getRuleContext(FactorContext.class,0);
 		}
-	}
-	@SuppressWarnings("CheckReturnValue")
-	public static class NumberTerminalContext extends FactorContext {
-		public TerminalNode NUMBER() { return getToken(MiniPascalParser.NUMBER, 0); }
-		public NumberTerminalContext(FactorContext ctx) { copyFrom(ctx); }
+		public TerminalNode TRUE() { return getToken(MiniPascalParser.TRUE, 0); }
+		public TerminalNode FALSE() { return getToken(MiniPascalParser.FALSE, 0); }
+		public FactorContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_factor; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MiniPascalVisitor ) return ((MiniPascalVisitor<? extends T>)visitor).visitNumberTerminal(this);
+			if ( visitor instanceof MiniPascalVisitor ) return ((MiniPascalVisitor<? extends T>)visitor).visitFactor(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -2360,7 +2298,6 @@ public class MiniPascalParser extends Parser {
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case IDENTIFIER:
-				_localctx = new IdentifierTerminalContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(301);
@@ -2368,7 +2305,6 @@ public class MiniPascalParser extends Parser {
 				}
 				break;
 			case NUMBER:
-				_localctx = new NumberTerminalContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(302);
@@ -2376,7 +2312,6 @@ public class MiniPascalParser extends Parser {
 				}
 				break;
 			case STRINGLITERAL:
-				_localctx = new StringTerminalContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(303);
@@ -2384,7 +2319,6 @@ public class MiniPascalParser extends Parser {
 				}
 				break;
 			case CHARACTER:
-				_localctx = new CharTerminalContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
 				setState(304);
@@ -2392,7 +2326,6 @@ public class MiniPascalParser extends Parser {
 				}
 				break;
 			case LPAREN:
-				_localctx = new BetweenParentsExpressionContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
 				setState(305);
@@ -2404,7 +2337,6 @@ public class MiniPascalParser extends Parser {
 				}
 				break;
 			case NOT:
-				_localctx = new NotFactorOperatorContext(_localctx);
 				enterOuterAlt(_localctx, 6);
 				{
 				setState(309);
@@ -2414,7 +2346,6 @@ public class MiniPascalParser extends Parser {
 				}
 				break;
 			case TRUE:
-				_localctx = new TrueOperatorContext(_localctx);
 				enterOuterAlt(_localctx, 7);
 				{
 				setState(311);
@@ -2422,7 +2353,6 @@ public class MiniPascalParser extends Parser {
 				}
 				break;
 			case FALSE:
-				_localctx = new FalseOperatorContext(_localctx);
 				enterOuterAlt(_localctx, 8);
 				{
 				setState(312);

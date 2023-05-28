@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 
 public class AVarDeclarationVisitor extends MiniPascalBaseVisitor<AVarDeclarationNode>{
-    private ArrayList<AVariableDeclarationNode> variableDeclarations;
-    private ArrayList<String> semicolons;
+    private ArrayList<AVariableDeclarationNode> variableDeclarations = new ArrayList<>();
+    private ArrayList<String> semicolons = new ArrayList<>();
 
     @Override
     public AVarDeclarationNode visitVarDeclaration(MiniPascalParser.VarDeclarationContext ctx) {

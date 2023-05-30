@@ -5,6 +5,7 @@ public class AVariableDeclarationNode {
     private String colon;
     private ATypeNode type;
     private AArraySpecifierNode arraySpecifierNode;
+    private Token startToken;
 
     public AVariableDeclarationNode(String identifier, String colon, ATypeNode type, AArraySpecifierNode arraySpecifierNode) {
         this.identifier = identifier;
@@ -50,5 +51,13 @@ public class AVariableDeclarationNode {
 
     public AArraySpecifierNode getArraySpecifierNode() {
         return arraySpecifierNode;
+    }
+
+    public void setStartToken(Token token) {
+        this.startToken = token;
+    }
+
+    public Token getStartToken() {
+        return startToken;
     }
 }

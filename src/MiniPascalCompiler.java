@@ -18,5 +18,6 @@ public class MiniPascalCompiler {
         ParseTree tree = parser.prog();
         AProgramVisitor visitor = new AProgramVisitor();
         visitor.visit(tree);
+        System.out.println("Compilation completed successfully!");
     }
 }

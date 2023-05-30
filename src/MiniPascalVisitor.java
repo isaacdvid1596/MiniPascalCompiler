@@ -51,47 +51,11 @@ public interface MiniPascalVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitIndexRange(MiniPascalParser.IndexRangeContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Integer}
-	 * labeled alternative in {@link MiniPascalParser#type}.
+	 * Visit a parse tree produced by {@link MiniPascalParser#type}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitInteger(MiniPascalParser.IntegerContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Real}
-	 * labeled alternative in {@link MiniPascalParser#type}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitReal(MiniPascalParser.RealContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Boolean}
-	 * labeled alternative in {@link MiniPascalParser#type}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBoolean(MiniPascalParser.BooleanContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Char}
-	 * labeled alternative in {@link MiniPascalParser#type}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitChar(MiniPascalParser.CharContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code String}
-	 * labeled alternative in {@link MiniPascalParser#type}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitString(MiniPascalParser.StringContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Array}
-	 * labeled alternative in {@link MiniPascalParser#type}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitArray(MiniPascalParser.ArrayContext ctx);
+	T visitType(MiniPascalParser.TypeContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code CompountStatement}
 	 * labeled alternative in {@link MiniPascalParser#compound_statement}.

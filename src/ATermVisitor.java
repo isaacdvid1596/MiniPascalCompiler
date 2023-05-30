@@ -2,7 +2,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.ArrayList;
 
-public class ATermVisitor extends MiniPascalBaseVisitor<ATermNode>{
+public class       ATermVisitor extends MiniPascalBaseVisitor<ATermNode>{
 
     ArrayList<AMulOpNode> mulops = new ArrayList<>();
     ArrayList<AFactorNode> factors = new ArrayList<>();

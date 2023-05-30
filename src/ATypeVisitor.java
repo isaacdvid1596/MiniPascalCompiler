@@ -1,32 +1,26 @@
 public class ATypeVisitor extends MiniPascalBaseVisitor<ATypeNode>{
     @Override
-    public ATypeNode visitInteger(MiniPascalParser.IntegerContext ctx) {
-        return new AIntegerType();
-    }
-
-    @Override
-    public ATypeNode visitReal(MiniPascalParser.RealContext ctx) {
-        return new ARealType();
-    }
-
-    @Override
-    public ATypeNode visitBoolean(MiniPascalParser.BooleanContext ctx) {
-        return new ABooleanType();
-    }
-
-    @Override
-    public ATypeNode visitChar(MiniPascalParser.CharContext ctx) {
-        return new ACharType();
-    }
-
-    @Override
-    public ATypeNode visitString(MiniPascalParser.StringContext ctx) {
-        return new AStringType();
-    }
-
-    @Override
-    public ATypeNode visitArraySpecifier(MiniPascalParser.ArraySpecifierContext ctx) {
-        AArraySpecifierVisitor aArraySpecifierVisitor = new AArraySpecifierVisitor();
-        return aArraySpecifierVisitor.visit(ctx);
+    public ATypeNode visitType(MiniPascalParser.TypeContext ctx) {
+        if(ctx.INTEGER()!=null){
+            String integerKeyword = ctx.INTEGER().getText();
+            return new AIntegerType(integerKeyword);
+        }else if(ctx.REAL()!=null){
+            String realKeyword = ctx.REAL().getText();
+            return new ARealType(realKeyword);
+        }else if(ctx.BOOLEAN()!=null){
+            String booleanKeyword = ctx.BOOLEAN().getText();
+            return new ABooleanType(booleanKeyword);
+        }else if(ctx.CHAR()!=null){
+            String charKeyword = ctx.CHAR().getText();
+            return new ACharType(charKeyword);
+        }else if(ctx.STRING()!=null){
+            String stringKeyword = ctx.STRING().getText();
+            return new AStringType(stringKeyword);
+        }else if(ctx.array_specifier()!=null){
+            AArraySpecifierVisitor arraySpecifierVisitor = new AArraySpecifierVisitor();
+            AArraySpecifierNode specifierNode = arraySpecifierVisitor.visit(ctx.array_specifier());
+            return specifierNode;
+        }
+        return null;
     }
 }

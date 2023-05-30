@@ -533,75 +533,21 @@ public class MiniPascalParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class TypeContext extends ParserRuleContext {
+		public TerminalNode INTEGER() { return getToken(MiniPascalParser.INTEGER, 0); }
+		public TerminalNode REAL() { return getToken(MiniPascalParser.REAL, 0); }
+		public TerminalNode BOOLEAN() { return getToken(MiniPascalParser.BOOLEAN, 0); }
+		public TerminalNode CHAR() { return getToken(MiniPascalParser.CHAR, 0); }
+		public TerminalNode STRING() { return getToken(MiniPascalParser.STRING, 0); }
+		public Array_specifierContext array_specifier() {
+			return getRuleContext(Array_specifierContext.class,0);
+		}
 		public TypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_type; }
-	 
-		public TypeContext() { }
-		public void copyFrom(TypeContext ctx) {
-			super.copyFrom(ctx);
-		}
-	}
-	@SuppressWarnings("CheckReturnValue")
-	public static class IntegerContext extends TypeContext {
-		public TerminalNode INTEGER() { return getToken(MiniPascalParser.INTEGER, 0); }
-		public IntegerContext(TypeContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MiniPascalVisitor ) return ((MiniPascalVisitor<? extends T>)visitor).visitInteger(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	@SuppressWarnings("CheckReturnValue")
-	public static class ArrayContext extends TypeContext {
-		public Array_specifierContext array_specifier() {
-			return getRuleContext(Array_specifierContext.class,0);
-		}
-		public ArrayContext(TypeContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MiniPascalVisitor ) return ((MiniPascalVisitor<? extends T>)visitor).visitArray(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	@SuppressWarnings("CheckReturnValue")
-	public static class CharContext extends TypeContext {
-		public TerminalNode CHAR() { return getToken(MiniPascalParser.CHAR, 0); }
-		public CharContext(TypeContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MiniPascalVisitor ) return ((MiniPascalVisitor<? extends T>)visitor).visitChar(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	@SuppressWarnings("CheckReturnValue")
-	public static class RealContext extends TypeContext {
-		public TerminalNode REAL() { return getToken(MiniPascalParser.REAL, 0); }
-		public RealContext(TypeContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MiniPascalVisitor ) return ((MiniPascalVisitor<? extends T>)visitor).visitReal(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	@SuppressWarnings("CheckReturnValue")
-	public static class StringContext extends TypeContext {
-		public TerminalNode STRING() { return getToken(MiniPascalParser.STRING, 0); }
-		public StringContext(TypeContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MiniPascalVisitor ) return ((MiniPascalVisitor<? extends T>)visitor).visitString(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	@SuppressWarnings("CheckReturnValue")
-	public static class BooleanContext extends TypeContext {
-		public TerminalNode BOOLEAN() { return getToken(MiniPascalParser.BOOLEAN, 0); }
-		public BooleanContext(TypeContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MiniPascalVisitor ) return ((MiniPascalVisitor<? extends T>)visitor).visitBoolean(this);
+			if ( visitor instanceof MiniPascalVisitor ) return ((MiniPascalVisitor<? extends T>)visitor).visitType(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -614,7 +560,6 @@ public class MiniPascalParser extends Parser {
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case INTEGER:
-				_localctx = new IntegerContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(117);
@@ -622,7 +567,6 @@ public class MiniPascalParser extends Parser {
 				}
 				break;
 			case REAL:
-				_localctx = new RealContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(118);
@@ -630,7 +574,6 @@ public class MiniPascalParser extends Parser {
 				}
 				break;
 			case BOOLEAN:
-				_localctx = new BooleanContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(119);
@@ -638,7 +581,6 @@ public class MiniPascalParser extends Parser {
 				}
 				break;
 			case CHAR:
-				_localctx = new CharContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
 				setState(120);
@@ -646,7 +588,6 @@ public class MiniPascalParser extends Parser {
 				}
 				break;
 			case STRING:
-				_localctx = new StringContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
 				setState(121);
@@ -654,7 +595,6 @@ public class MiniPascalParser extends Parser {
 				}
 				break;
 			case ARRAY:
-				_localctx = new ArrayContext(_localctx);
 				enterOuterAlt(_localctx, 6);
 				{
 				setState(122);

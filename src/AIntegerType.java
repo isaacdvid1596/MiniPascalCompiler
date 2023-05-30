@@ -1,11 +1,7 @@
 public class AIntegerType extends ATypeNode{
+    private String integer;
 
-    @Override
-    public <T> T accept(AVisitor<T> visitor) {
-        return visitor.visit(this);
-    }
-    @Override
-    public String toString() {
-        return "integer";
+    public AIntegerType(String integer) {
+        this.integer = integer;
     }
 }

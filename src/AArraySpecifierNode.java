@@ -15,11 +15,6 @@ public class AArraySpecifierNode extends ATypeNode{
 
     @Override
     public String toString() {
-        return null;
-    }
-
-    @Override
-    public <T> T accept(AVisitor<T> visitor) {
-        return visitor.visit(this);
+        return this.arrayKeyword+this.leftBracket+this.indexRange.toString()+rightBracket+type.toString();
     }
 }

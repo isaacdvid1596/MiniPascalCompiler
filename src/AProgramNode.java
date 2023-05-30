@@ -9,9 +9,8 @@ public class AProgramNode {
         this.codeblock = codeblock;
         this.semicolon = semicolon;
     }
-
     @Override
     public String toString() {
-        return this.programKeyword+""+this.identifier+""+this.semicolon+""+this.codeblock;
+        return this.programKeyword+this.identifier+this.semicolon+this.codeblock;
     }
 }

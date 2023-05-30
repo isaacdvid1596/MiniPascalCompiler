@@ -8,16 +8,16 @@ var_declaration : VAR (variable_declaration SEMICOLON)* #VarDeclaration
 ;
 variable_declaration : IDENTIFIER COLON type (array_specifier)?
 ;
-array_specifier : ARRAY LBRACKET index_range RBRACKET OF type#ArraySpecifier
+array_specifier : ARRAY LBRACKET index_range RBRACKET OF type #ArraySpecifier
 ;
 index_range : NUMBER DOTDOT NUMBER #IndexRange
 ;
-type : INTEGER    #Integer
-        | REAL    #Real
-        | BOOLEAN #Boolean
-        | CHAR    #Char
-        | STRING  #String
-        | array_specifier#Array
+type : INTEGER   
+        | REAL    
+        | BOOLEAN 
+        | CHAR    
+        | STRING  
+        | array_specifier
         ;
 compound_statement : BEGIN statement_list END* #CompountStatement
 ;

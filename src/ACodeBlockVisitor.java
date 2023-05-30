@@ -31,5 +31,8 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode>{
         }
         String programEndMarker = ctx.PROGRAM_END().getText();
         return new ACodeBlockNode(varDeclarations,functionDeclarations,compoundStatements,programEndMarker);
+        //type check
+
+
     }
 }

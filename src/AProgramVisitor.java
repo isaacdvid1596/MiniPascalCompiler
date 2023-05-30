@@ -27,12 +27,11 @@ public class AProgramVisitor extends MiniPascalBaseVisitor<AProgramNode>{
         for(AVarDeclarationNode varDeclarationNode: codeBlock.getVarDeclarations()){
             for(AVariableDeclarationNode variable: varDeclarationNode.getVariableDeclarations()){
                 String varName = variable.getIdentifier();
-
                 if(symbolTable.containsVariable(varName)){
                     Token token = variable.getStartToken();
                     int line = token.getLine();
                     int column = token.getCharPositionInLine();
-                    throw new SemanticException(varName+" already declared in this scope, line: "+line+" column:"+column);
+                    throw new SemanticException("Duplicate identifier "+token.getText()+" in ("+line+","+column+") ");
                 }else{
                     VariableType variableType = variable.getVariableType();
                     symbolTable.addVariable(varName,variableType);

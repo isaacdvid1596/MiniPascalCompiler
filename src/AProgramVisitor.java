@@ -1,6 +1,5 @@
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.tree.ParseTree;
 
 public class AProgramVisitor extends MiniPascalBaseVisitor<AProgramNode>{
     private SymbolTable symbolTable = new SymbolTable();
@@ -18,25 +17,6 @@ public class AProgramVisitor extends MiniPascalBaseVisitor<AProgramNode>{
 
         symbolTable.exitScope();
 
-        validateCodeBlock(codeBlock,ctx.code_block());
-
         return new AProgramNode(programKeyword, name, semicolon,codeBlock);
-    }
-
-    private void validateCodeBlock(ACodeBlockNode codeBlock, ParserRuleContext context) {
-        for(AVarDeclarationNode varDeclarationNode: codeBlock.getVarDeclarations()){
-            for(AVariableDeclarationNode variable: varDeclarationNode.getVariableDeclarations()){
-                String varName = variable.getIdentifier();
-                if(symbolTable.containsVariable(varName)){
-                    Token token = variable.getStartToken();
-                    int line = token.getLine();
-                    int column = token.getCharPositionInLine();
-                    throw new SemanticException("Duplicate identifier "+token.getText()+" in ("+line+","+column+") ");
-                }else{
-                    VariableType variableType = variable.getVariableType();
-                    symbolTable.addVariable(varName,variableType);
-                }
-            }
-        }
     }
 }

@@ -17,4 +17,12 @@ public class AParameterListNode {
         this.delimiterList = delimiterList;
         this.parameterDeclarations = parameterDeclarations;
     }
+
+    public AParameterDeclarationNode getaParameterDeclaration() {
+        return aParameterDeclaration;
+    }
+
+    public ArrayList<AParameterDeclarationNode> getParameterDeclarations() {
+        return parameterDeclarations;
+    }
 }

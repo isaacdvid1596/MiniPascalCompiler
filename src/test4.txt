@@ -3,7 +3,7 @@ program factorial;
 var
   num: integer;
 
-function calculateFactorial(n: integer): integer;
+function calculateFactorial(n: integer,n:integer): integer;
 begin
   if n <= 1 then
     calculateFactorial := 1

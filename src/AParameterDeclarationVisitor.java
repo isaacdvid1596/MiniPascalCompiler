@@ -5,6 +5,8 @@ public class AParameterDeclarationVisitor extends MiniPascalBaseVisitor<AParamet
         String colon = ctx.COLON().getText();
         ATypeVisitor aTypeVisitor = new ATypeVisitor();
         ATypeNode aTypeNode = aTypeVisitor.visit(ctx.type());
-        return new AParameterDeclarationNode(identifier,colon,aTypeNode);
+        AParameterDeclarationNode parameterDeclarationNode = new AParameterDeclarationNode(identifier,colon,aTypeNode);
+        parameterDeclarationNode.setStartToken(ctx.getStart());
+        return parameterDeclarationNode;
     }
 }

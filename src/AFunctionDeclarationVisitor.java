@@ -13,6 +13,8 @@ public class AFunctionDeclarationVisitor extends MiniPascalBaseVisitor<AFunction
         String identifierSemicolon = ctx.SEMICOLON().getText();
         AFunctionBlockVisitor functionBlockVisitor = new AFunctionBlockVisitor();
         AFunctionBlockNode functionBlockNode = functionBlockVisitor.visit(ctx.function_block());
-        return new AFunctionDeclarationNode(functionKeyword,identifierKeyword,identifierLParent,parameterListNode,identifierRParent,identifierColon,parameterTypeNode,identifierSemicolon,functionBlockNode);
+        AFunctionDeclarationNode functionDeclarationNode = new AFunctionDeclarationNode(functionKeyword,identifierKeyword,identifierLParent,parameterListNode,identifierRParent,identifierColon,parameterTypeNode,identifierSemicolon,functionBlockNode);
+        functionDeclarationNode.setStartToken(ctx.getStart());
+        return functionDeclarationNode;
     }
 }

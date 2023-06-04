@@ -10,6 +10,8 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode>{
 
     private SymbolTable symbolTable = new SymbolTable();
 
+    ArrayList<SemanticException> semanticExceptions = new ArrayList<>();
+
     @Override
     public ACodeBlockNode visitCode_Block(MiniPascalParser.Code_BlockContext ctx) {
 
@@ -46,6 +48,7 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode>{
     }
 
     private void validateCodeBlock(ACodeBlockNode codeBlockNode) {
+       
         //validate var_declaration*
         for(AVarDeclarationNode varDeclarationNode: codeBlockNode.getVarDeclarations()){
             for(AVariableDeclarationNode variable: varDeclarationNode.getVariableDeclarations()){
@@ -54,7 +57,9 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode>{
                     Token token = variable.getStartToken();
                     int line = token.getLine();
                     int column = token.getCharPositionInLine();
-                    throw new SemanticException("Duplicate identifier "+token.getText()+" in ("+line+","+column+") ");
+//                    SemanticException exception =  new SemanticException("Duplicate identifier "+token.getText()+" in ("+line+","+column+") ");
+//                    semanticExceptions.add(exception);
+                    semanticExceptions.add(new SemanticException("Duplicate identifier "+token.getText()+" in ("+line+","+column+") "));
                 }else{
                     VariableType variableType = variable.getVariableType();
                     symbolTable.addVariable(varName,variableType);
@@ -69,7 +74,7 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode>{
                 Token token = functionDeclarationNode.getStartToken();
                 int line = token.getLine();
                 int column = token.getCharPositionInLine();
-                throw new SemanticException("Duplicate function identifier "+functionIdentifier+" in ("+line+","+column+") ");
+                semanticExceptions.add(new SemanticException("Duplicate function identifier "+functionIdentifier+" in ("+line+","+column+") "));
             }else{
                 VariableType functionType = functionDeclarationNode.getVariableType();
                 symbolTable.addVariable(functionIdentifier,functionType);
@@ -92,11 +97,20 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode>{
                     Token token =  parameter.getStartToken();
                     int line = token.getLine();
                     int column = token.getCharPositionInLine();
-                    throw new SemanticException("Duplicate parameter name "+parameterId+" in function at ("+line+","+column+")");
+                    semanticExceptions.add(new SemanticException("Duplicate parameter name "+parameterId+" in function at ("+line+","+column+")"));
                 }else{
                     symbolTable.addVariable(parameterId,parameter.getVariableType());
                 }
             }
         }
+        // Handle semantic exceptions
+        if (!semanticExceptions.isEmpty()) {
+            System.out.println("Errors found during compilation process: ");
+            for (SemanticException semanticException : semanticExceptions) {
+                System.out.println(semanticException.getMessage());
+            }
+            throw new SemanticException("Please fix the errors above to properly compile code");
+        }
+
     }
 }

@@ -43,12 +43,12 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode>{
         symbolTable.exitScope();
 
         ACodeBlockNode codeBlockNode = new ACodeBlockNode(varDeclarations,functionDeclarations,compoundStatements,programEndMarker);
+        codeBlockNode.setStartToken(ctx.getStop());
         validateCodeBlock(codeBlockNode);
         return codeBlockNode;
     }
 
     private void validateCodeBlock(ACodeBlockNode codeBlockNode) {
-       
         //validate var_declaration*
         for(AVarDeclarationNode varDeclarationNode: codeBlockNode.getVarDeclarations()){
             for(AVariableDeclarationNode variable: varDeclarationNode.getVariableDeclarations()){
@@ -57,9 +57,7 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode>{
                     Token token = variable.getStartToken();
                     int line = token.getLine();
                     int column = token.getCharPositionInLine();
-//                    SemanticException exception =  new SemanticException("Duplicate identifier "+token.getText()+" in ("+line+","+column+") ");
-//                    semanticExceptions.add(exception);
-                    semanticExceptions.add(new SemanticException("Duplicate identifier "+token.getText()+" in ("+line+","+column+") "));
+                    semanticExceptions.add(new SemanticException("Duplicate identifier "+token.getText()+" in ("+line+","+column+")"));
                 }else{
                     VariableType variableType = variable.getVariableType();
                     symbolTable.addVariable(varName,variableType);
@@ -67,7 +65,7 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode>{
             }
         }
         //validate function_declaration*
-        //still need to validate that the return type of the function equals the actual returned value type
+
         for(AFunctionDeclarationNode functionDeclarationNode: codeBlockNode.getFunctionDeclarations()){
             String functionIdentifier = functionDeclarationNode.getIdentifier();
             if(symbolTable.containsVariable(functionIdentifier)){
@@ -97,12 +95,40 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode>{
                     Token token =  parameter.getStartToken();
                     int line = token.getLine();
                     int column = token.getCharPositionInLine();
-                    semanticExceptions.add(new SemanticException("Duplicate parameter name "+parameterId+" in function at ("+line+","+column+")"));
+                    semanticExceptions.add(new SemanticException("Error: overloaded functions have the same parameter list ("+line+","+column+")"));
                 }else{
                     symbolTable.addVariable(parameterId,parameter.getVariableType());
                 }
             }
+
+            //validar el type de func = return type, recorrer profundidad hasta encontrar el assignment
+
+
         }
+
+        //validate compound_statement*
+//        for(ACompoundStatementNode compoundStatementNode:  codeBlockNode.getCompoundStatements()){
+//            AStatementListNode statementListNode = compoundStatementNode.getStatementListNode();
+//            AStatementNode statementNode = statementListNode.getStatementNode();
+//            ArrayList<AStatementNode> statementNodes = statementListNode.getStatementNodes();
+//            if(statementNodes.isEmpty()){
+//                if(statementNode instanceof AAssignmentStatementNode){
+//                    //validate assignment if variable is declared in var_declaraions and in system table
+//                    AAssignmentStatementNode assignmentStatementNode = (AAssignmentStatementNode) statementNode;
+//                    String variableName = assignmentStatementNode.getVariableNode().getIdentifier();
+//                    if(!symbolTable.containsVariable(variableName)){
+//                        Token token = assignmentStatementNode.getStartToken();
+//                        int line = token.getLine();
+//                        int column = token.getCharPositionInLine();
+//                        semanticExceptions.add(new SemanticException("Undeclared variable "+variableName+" used in assignment at ("+line+","+column+")"));
+//                    }
+//                }
+//            }else{
+//
+//            }
+//        }
+
+
         // Handle semantic exceptions
         if (!semanticExceptions.isEmpty()) {
             System.out.println("Errors found during compilation process: ");
@@ -114,3 +140,6 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode>{
 
     }
 }
+
+
+//**still need to validate that the return type of the function equals the actual returned value type

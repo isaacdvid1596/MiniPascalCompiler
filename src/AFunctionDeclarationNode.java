@@ -42,12 +42,20 @@ public class AFunctionDeclarationNode extends AStatementNode{
         return null;
     }
 
+    public AFunctionBlockNode getFunctionBlockNode() {
+        return functionBlockNode;
+    }
+
     public AParameterListNode getParameterListNode() {
         return parameterListNode;
     }
 
     public String getIdentifier() {
         return identifier;
+    }
+
+    public ATypeNode getType() {
+        return type;
     }
 
     public void setStartToken(Token token){

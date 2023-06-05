@@ -38,4 +38,12 @@ public class AExpressionNode {
         this.aSimpleExpressionNodes = aSimpleExpressionNodes;
         this.semicolons = semicolon;
     }
+
+    public ASimpleExpressionNode getaSimpleExpressionNode() {
+        return aSimpleExpressionNode;
+    }
+
+    public ArrayList<ASimpleExpressionNode> getaSimpleExpressionNodes() {
+        return aSimpleExpressionNodes;
+    }
 }

@@ -22,4 +22,12 @@ public class ASimpleExpressionNode {
         this.orKeyword = orKeyword;
         this.termNodes = termNodes;
     }
+
+    public ATermNode getTermNode() {
+        return termNode;
+    }
+
+    public ArrayList<ATermNode> getTermNodes() {
+        return termNodes;
+    }
 }

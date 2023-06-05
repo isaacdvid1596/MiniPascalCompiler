@@ -1,8 +1,11 @@
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 
+import java.util.ArrayList;
+
 public class AProgramVisitor extends MiniPascalBaseVisitor<AProgramNode>{
     private SymbolTable symbolTable = new SymbolTable();
+    private ArrayList<SemanticException> semanticExceptions = new ArrayList<>();
 
     @Override
     public AProgramNode visitProgram(MiniPascalParser.ProgramContext ctx) {
@@ -17,6 +20,8 @@ public class AProgramVisitor extends MiniPascalBaseVisitor<AProgramNode>{
 
         symbolTable.exitScope();
 
-        return new AProgramNode(programKeyword, name, semicolon,codeBlock);
+        AProgramNode programNode = new AProgramNode(programKeyword, name, semicolon,codeBlock);
+
+        return programNode;
     }
 }

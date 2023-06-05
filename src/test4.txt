@@ -3,12 +3,15 @@ program factorial;
 var
   num: integer;
 
-function calculateFactorial(n: integer,n:integer): integer;x`
+
+function calculateFactorial(n: integer): integer;
 begin
-  if n <= 1 then
-    calculateFactorial := 1
-  else
-    calculateFactorial := n * calculateFactorial(n-1);
+    calculateFactorial := 'lol';
+end;
+
+function calculateFactorial(n: integer): integer;
+begin
+    calculateFactorial := 'lol';
 end;
 
 begin

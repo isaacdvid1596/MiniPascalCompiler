@@ -25,4 +25,12 @@ public class ATermNode {
         this.factorNode = factorNode;
         this.factorNodes = factorNodes;
     }
+
+    public AFactorNode getFactorNode() {
+        return factorNode;
+    }
+
+    public ArrayList<AFactorNode> getFactorNodes() {
+        return factorNodes;
+    }
 }

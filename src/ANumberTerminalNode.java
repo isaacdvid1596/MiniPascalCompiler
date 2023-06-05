@@ -9,4 +9,6 @@ public class ANumberTerminalNode extends AFactorNode{
     public String toString() {
         return this.number;
     }
+
+    //validation to confirm if real or integer?
 }

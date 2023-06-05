@@ -10,4 +10,8 @@ public class AVariableNode {
         this.identifier = identifier;
         this.indexAccessNode = indexAccessNode;
     }
+
+    public String getIdentifier() {
+        return identifier;
+    }
 }

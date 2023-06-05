@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public abstract class AStatementListNode {
+public class AStatementListNode {
     private AStatementNode statementNode;
     private ArrayList<String> semicolons;
     private ArrayList<AStatementNode> statementNodes;
@@ -14,5 +14,13 @@ public abstract class AStatementListNode {
     public AStatementListNode(AStatementNode statementNode, ArrayList<String> semicolons) {
         this.statementNode = statementNode;
         this.semicolons = semicolons;
+    }
+
+    public ArrayList<AStatementNode> getStatementNodes() {
+        return statementNodes;
+    }
+
+    public AStatementNode getStatementNode() {
+        return statementNode;
     }
 }

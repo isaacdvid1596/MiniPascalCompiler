@@ -15,4 +15,8 @@ public class AFunctionBlockNode {
         this.compoundStatementNode = compoundStatementNode;
         this.functionEndKeyword = functionEndKeyword;
     }
+
+    public ACompoundStatementNode getCompoundStatementNode() {
+        return compoundStatementNode;
+    }
 }

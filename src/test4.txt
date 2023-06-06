@@ -2,16 +2,15 @@ program factorial;
 
 var
   num: integer;
-
-
+  num: integer;
 function calculateFactorial(n: integer): integer;
 begin
-    calculateFactorial := 'lol';
+    calculateFactorial := num2;
 end;
 
 function calculateFactorial(n: integer): integer;
 begin
-    calculateFactorial := 'lol';
+    calculateFactorial := num2;
 end;
 
 begin

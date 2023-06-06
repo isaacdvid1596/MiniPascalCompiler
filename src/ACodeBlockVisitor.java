@@ -8,7 +8,7 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode>{
     private List<AFunctionDeclarationNode> functionDeclarations = new ArrayList<>();
     private List<ACompoundStatementNode> compoundStatements = new ArrayList<>();
 
-    private SymbolTable symbolTable = new SymbolTable();
+    private SymbolTable symbolTable = SymbolTable.getInstance();
 
     ArrayList<SemanticException> semanticExceptions = new ArrayList<>();
 
@@ -107,26 +107,37 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode>{
         }
 
         //validate compound_statement*
-//        for(ACompoundStatementNode compoundStatementNode:  codeBlockNode.getCompoundStatements()){
-//            AStatementListNode statementListNode = compoundStatementNode.getStatementListNode();
-//            AStatementNode statementNode = statementListNode.getStatementNode();
-//            ArrayList<AStatementNode> statementNodes = statementListNode.getStatementNodes();
-//            if(statementNodes.isEmpty()){
-//                if(statementNode instanceof AAssignmentStatementNode){
-//                    //validate assignment if variable is declared in var_declaraions and in system table
-//                    AAssignmentStatementNode assignmentStatementNode = (AAssignmentStatementNode) statementNode;
-//                    String variableName = assignmentStatementNode.getVariableNode().getIdentifier();
-//                    if(!symbolTable.containsVariable(variableName)){
-//                        Token token = assignmentStatementNode.getStartToken();
-//                        int line = token.getLine();
-//                        int column = token.getCharPositionInLine();
-//                        semanticExceptions.add(new SemanticException("Undeclared variable "+variableName+" used in assignment at ("+line+","+column+")"));
-//                    }
-//                }
-//            }else{
-//
-//            }
-//        }
+        for(ACompoundStatementNode compoundStatementNode:  codeBlockNode.getCompoundStatements()){
+            AStatementListNode statementListNode = compoundStatementNode.getStatementListNode();
+            AStatementNode statementNode = statementListNode.getStatementNode();
+            ArrayList<AStatementNode> statementNodes = statementListNode.getStatementNodes();
+            if(statementNodes.isEmpty()){
+                if(statementNode instanceof AAssignmentStatementNode){
+                    //validate assignment if variable is declared in var_declarations and in system table
+                    AAssignmentStatementNode assignmentStatementNode = (AAssignmentStatementNode) statementNode;
+                    String variableName = assignmentStatementNode.getVariableNode().getIdentifier();
+                    if(!symbolTable.containsVariable(variableName)){
+                        Token token = assignmentStatementNode.getStartToken();
+                        int line = token.getLine();
+                        int column = token.getCharPositionInLine();
+                        semanticExceptions.add(new SemanticException("Undeclared variable "+variableName+" used in assignment at ("+line+","+column+")"));
+                    }
+                }
+            }else{
+                for(AStatementNode stmtNode : statementNodes) {
+                    if(stmtNode instanceof AAssignmentStatementNode){
+                        AAssignmentStatementNode assignmentStatementNode = (AAssignmentStatementNode) stmtNode;
+                        String variableName = assignmentStatementNode.getVariableNode().getIdentifier();
+                        if(!symbolTable.containsVariable(variableName)){
+                            Token token = assignmentStatementNode.getStartToken();
+                            int line = token.getLine();
+                            int column = token.getCharPositionInLine();
+                            semanticExceptions.add(new SemanticException("Undeclared variable "+variableName+" used in assignment at ("+line+","+column+")"));
+                        }
+                    }
+                }
+            }
+        }
 
 
         // Handle semantic exceptions

@@ -4,7 +4,7 @@ import org.antlr.v4.runtime.Token;
 import java.util.ArrayList;
 
 public class AProgramVisitor extends MiniPascalBaseVisitor<AProgramNode>{
-    private SymbolTable symbolTable = new SymbolTable();
+    private SymbolTable symbolTable = SymbolTable.getInstance();
     private ArrayList<SemanticException> semanticExceptions = new ArrayList<>();
 
     @Override

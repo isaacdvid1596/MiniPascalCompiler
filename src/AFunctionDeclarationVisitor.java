@@ -1,6 +1,9 @@
 public class AFunctionDeclarationVisitor extends MiniPascalBaseVisitor<AFunctionDeclarationNode>{
+
+    private SymbolTable symbolTable = SymbolTable.getInstance();
     @Override
     public AFunctionDeclarationNode visitFunctionDeclaration(MiniPascalParser.FunctionDeclarationContext ctx) {
+        symbolTable.enterScope();
         String functionKeyword = ctx.FUNCTION().getText();
         String identifierKeyword = ctx.IDENTIFIER().getText();
         String identifierLParent = ctx.LPAREN().getText();
@@ -15,6 +18,7 @@ public class AFunctionDeclarationVisitor extends MiniPascalBaseVisitor<AFunction
         AFunctionBlockNode functionBlockNode = functionBlockVisitor.visit(ctx.function_block());
         AFunctionDeclarationNode functionDeclarationNode = new AFunctionDeclarationNode(functionKeyword,identifierKeyword,identifierLParent,parameterListNode,identifierRParent,identifierColon,parameterTypeNode,identifierSemicolon,functionBlockNode);
         functionDeclarationNode.setStartToken(ctx.getStart());
+        symbolTable.exitScope();
         return functionDeclarationNode;
     }
 }

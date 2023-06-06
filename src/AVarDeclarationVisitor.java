@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class AVarDeclarationVisitor extends MiniPascalBaseVisitor<AVarDeclarationNode>{
     private ArrayList<AVariableDeclarationNode> variableDeclarations = new ArrayList<>();
     private ArrayList<String> semicolons = new ArrayList<>();
-    private SymbolTable symbolTable = new SymbolTable();
+    private SymbolTable symbolTable = SymbolTable.getInstance();
 
     @Override
     public AVarDeclarationNode visitVarDeclaration(MiniPascalParser.VarDeclarationContext ctx) {

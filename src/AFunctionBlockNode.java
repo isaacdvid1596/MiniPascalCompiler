@@ -19,4 +19,8 @@ public class AFunctionBlockNode {
     public ACompoundStatementNode getCompoundStatementNode() {
         return compoundStatementNode;
     }
+
+    public List<AVarDeclarationNode> getVariableDeclarations() {
+        return variableDeclarations;
+    }
 }

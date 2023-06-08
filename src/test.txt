@@ -3,8 +3,6 @@ var
   nums: array[1..5] of integer;
   a: array [0..1] of integer;
   i: integer;
-  i: integer;
-  i: integer;
   sum: integer;
   saludo: string;
   sal:char;
@@ -32,4 +30,4 @@ begin
   saludo := 'hola';
   sal := 'a';
   read(saludo);
-end
+end.

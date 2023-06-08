@@ -20,6 +20,7 @@ public class AFunctionBlockVisitor extends MiniPascalBaseVisitor<AFunctionBlockN
             ACompoundStatementVisitor compoundStatementVisitor =  new ACompoundStatementVisitor();
             ACompoundStatementNode compoundStatementNode = compoundStatementVisitor.visit(ctx.compound_statement());
             String endKeyword = ctx.FUNC_END().getText();
+            symbolTable.exitScope();
             return new AFunctionBlockNode(varDeclarations, compoundStatementNode, endKeyword);
         }
         ACompoundStatementVisitor compoundStatementVisitor =  new ACompoundStatementVisitor();

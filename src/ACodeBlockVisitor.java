@@ -1,4 +1,5 @@
 import org.antlr.v4.runtime.Token;
+import org.stringtemplate.v4.ST;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,12 +103,56 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode>{
             }
 
             //validar el type de func = return type, recorrer profundidad hasta encontrar el assignment
+            ATypeNode typeNode = functionDeclarationNode.getType();
+            String type = "";
+            if(typeNode instanceof AIntegerType){
+                AIntegerType integer = (AIntegerType) typeNode;
+                 type = integer.toString().toUpperCase();
+            }else if(typeNode instanceof AStringType){
+                AStringType string = (AStringType) typeNode;
+                type = string.toString().toUpperCase();
+            }
 
+            //recorrer el function para ver si hay variables sin declarar usadas. falta al lado derecha de la asignacion para funciones y demas.
 
+            AFunctionBlockNode functionBlockNode = functionDeclarationNode.getFunctionBlockNode();
+            ACompoundStatementNode compoundStatementNode = functionBlockNode.getCompoundStatementNode();
+            AStatementListNode statementListNode = compoundStatementNode.getStatementListNode();
+            AStatementNode statementNode = statementListNode.getStatementNode();
+            ArrayList<AStatementNode> statementNodes = statementListNode.getStatementNodes();
+//            if(!statementNodes.isEmpty()){
+//                for (AStatementNode node : statementNodes) {
+//                    if(node instanceof AAssignmentStatementNode){
+//                        AAssignmentStatementNode assignmentStatementNode = (AAssignmentStatementNode) node;
+//                        AExpressionNode expressionNode = assignmentStatementNode.getExpressionNode();
+//                        //asumiendo que solo hay un simple expression, luego verificar si no
+//                        ASimpleExpressionNode simpleExpressionNode = expressionNode.getaSimpleExpressionNode();
+//                        //asumiendo que solo hay un term, pueden haber mas, verificar eso luego
+//                        ATermNode termNode = simpleExpressionNode.getTermNode();
+//                        AFactorNode factorNode = termNode.getFactorNode();
+//                        if(factorNode instanceof ANumberTerminalNode){
+//                            String variableType = VariableType.INTEGER.toString();
+//                            if(!type.equals(variableType)){
+//                                semanticExceptions.add(new SemanticException("Incompatible types: got "+variableType+" expected "+type));
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+            //validate assignment if variable is declared in var_declarations and in symbol table
+            AAssignmentStatementNode assignmentStatementNode = (AAssignmentStatementNode) statementNode;
+            String variableName = assignmentStatementNode.getVariableNode().getIdentifier();
+            if (!symbolTable.containsVariable(variableName)){
+                Token token = assignmentStatementNode.getStartToken();
+                int line = token.getLine();
+                int column = token.getCharPositionInLine();
+                semanticExceptions.add(new SemanticException("Undeclared variable "+variableName+" used in assignment at ("+line+","+column+")"));
+            }
         }
 
-        //validate compound_statement*
-        for(ACompoundStatementNode compoundStatementNode:  codeBlockNode.getCompoundStatements()){
+
+//        validate compound_statement*
+        for(ACompoundStatementNode compoundStatementNode :  codeBlockNode.getCompoundStatements()){
             AStatementListNode statementListNode = compoundStatementNode.getStatementListNode();
             AStatementNode statementNode = statementListNode.getStatementNode();
             ArrayList<AStatementNode> statementNodes = statementListNode.getStatementNodes();
@@ -139,18 +184,17 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode>{
             }
         }
 
-
         // Handle semantic exceptions
         if (!semanticExceptions.isEmpty()) {
             System.out.println("Errors found during compilation process: ");
             for (SemanticException semanticException : semanticExceptions) {
                 System.out.println(semanticException.getMessage());
             }
-            throw new SemanticException("Please fix the errors above to properly compile code");
+            throw new SemanticException(" Fatal: There were "+semanticExceptions.size()+" errors compiling module, stopping");
         }
 
     }
-}
 
+}
 
 //**still need to validate that the return type of the function equals the actual returned value type

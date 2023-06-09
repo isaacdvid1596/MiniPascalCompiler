@@ -2,13 +2,12 @@ program factorial;
 
 var
   num: integer;
+  num: integer;
 function calculateFactorial(n: integer): integer;
 begin
     numb2:=2;
     calculateFactorial := 'lol';
 end;
-
-
 begin
   write('Enter a number to calculate its factorial: ');
   readln(num);

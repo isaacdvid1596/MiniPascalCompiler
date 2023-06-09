@@ -1,23 +1,11 @@
 program myProgram;
+
 var
-  x: integer;
-  b: integer;
-function myFunction(a: integer, b: integer): integer;
-function myFunction(a: integer, b: integer): integer;
+num:integer;
 
 begin
-  c := a + b;
-  myFunction := c;
-end;
-end
+    num:= 2;
+    num2:= 'lol';
 end.
-begin
-  x := 10;
-  writeln('x before function call: ', x);
-  x := myFunction(2, x);
-  writeln('x after function call: ', x);
 
-end
-end.
-end.
 

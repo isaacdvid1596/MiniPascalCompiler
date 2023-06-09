@@ -152,11 +152,12 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode>{
 
 
 //        validate compound_statement*
+        //need to validate whether list or only one compound or none!!
         for(ACompoundStatementNode compoundStatementNode :  codeBlockNode.getCompoundStatements()){
             AStatementListNode statementListNode = compoundStatementNode.getStatementListNode();
             AStatementNode statementNode = statementListNode.getStatementNode();
             ArrayList<AStatementNode> statementNodes = statementListNode.getStatementNodes();
-            if(statementNodes.isEmpty()){
+
                 if(statementNode instanceof AAssignmentStatementNode){
                     //validate assignment if variable is declared in var_declarations and in system table
                     AAssignmentStatementNode assignmentStatementNode = (AAssignmentStatementNode) statementNode;
@@ -168,19 +169,22 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode>{
                         semanticExceptions.add(new SemanticException("Undeclared variable "+variableName+" used in assignment at ("+line+","+column+")"));
                     }
                 }
-            }else{
-                for(AStatementNode stmtNode : statementNodes) {
-                    if(stmtNode instanceof AAssignmentStatementNode){
-                        AAssignmentStatementNode assignmentStatementNode = (AAssignmentStatementNode) stmtNode;
-                        String variableName = assignmentStatementNode.getVariableNode().getIdentifier();
-                        if(!symbolTable.containsVariable(variableName)){
-                            Token token = assignmentStatementNode.getStartToken();
-                            int line = token.getLine();
-                            int column = token.getCharPositionInLine();
-                            semanticExceptions.add(new SemanticException("Undeclared variable "+variableName+" used in assignment at ("+line+","+column+")"));
+                if (statementNodes != null && !statementNodes.isEmpty()) {
+                    for (AStatementNode stmtNode : statementNodes) {
+                        if (stmtNode instanceof AAssignmentStatementNode) {
+                            AAssignmentStatementNode assignmentStatementNode = (AAssignmentStatementNode) stmtNode;
+                            AVariableNode variableNode = assignmentStatementNode.getVariableNode();
+                            if (variableNode != null) {
+                                String variableName = variableNode.getIdentifier();
+                                if (!symbolTable.containsVariable(variableName)) {
+                                    Token token = assignmentStatementNode.getStartToken();
+                                    int line = token.getLine();
+                                    int column = token.getCharPositionInLine();
+                                    semanticExceptions.add(new SemanticException("Undeclared variable " + variableName + " used in assignment at (" + line + "," + column + ")"));
+                                }
+                            }
                         }
                     }
-                }
             }
         }
 

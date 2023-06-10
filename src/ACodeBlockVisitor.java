@@ -157,7 +157,6 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode>{
             AStatementListNode statementListNode = compoundStatementNode.getStatementListNode();
             AStatementNode statementNode = statementListNode.getStatementNode();
             ArrayList<AStatementNode> statementNodes = statementListNode.getStatementNodes();
-
                 if(statementNode instanceof AAssignmentStatementNode){
                     //validate assignment if variable is declared in var_declarations and in system table
                     AAssignmentStatementNode assignmentStatementNode = (AAssignmentStatementNode) statementNode;
@@ -174,14 +173,36 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode>{
                         if (stmtNode instanceof AAssignmentStatementNode) {
                             AAssignmentStatementNode assignmentStatementNode = (AAssignmentStatementNode) stmtNode;
                             AVariableNode variableNode = assignmentStatementNode.getVariableNode();
+                            AExpressionNode expressionNode = assignmentStatementNode.getExpressionNode();
+                            //get expression type
+                            ASimpleExpressionNode simpleExpressionNode = expressionNode.getaSimpleExpressionNode();
+                            ATermNode termNode = simpleExpressionNode.getTermNode();
+                            AFactorNode factorNode = termNode.getFactorNode();
+                            VariableType typeOfFactor = null;
+                            Token tokenTypeFactor = null;
+                            int factorLine = 0;
+                            int factorColumn = 0;
+                            if(factorNode instanceof AStringLiteralNode){
+                                typeOfFactor = VariableType.STRING;
+                                AStringLiteralNode stringLiteralNode = (AStringLiteralNode) factorNode;
+                                tokenTypeFactor = stringLiteralNode.getStartToken();
+                                factorLine = tokenTypeFactor.getLine();
+                                factorColumn = tokenTypeFactor.getCharPositionInLine();
+                            }if(factorNode instanceof ANumberTerminalNode){
+                                typeOfFactor =  VariableType.INTEGER;
+                            }
                             if (variableNode != null) {
                                 String variableName = variableNode.getIdentifier();
+                                VariableType variableType = symbolTable.getVariableType(variableName);
                                 if (!symbolTable.containsVariable(variableName)) {
                                     Token token = assignmentStatementNode.getStartToken();
                                     int line = token.getLine();
                                     int column = token.getCharPositionInLine();
                                     semanticExceptions.add(new SemanticException("Undeclared variable " + variableName + " used in assignment at (" + line + "," + column + ")"));
                                 }
+                                    if(variableType!=null && typeOfFactor!=null && !variableType.equals(typeOfFactor)){
+                                        semanticExceptions.add(new SemanticException("Incompatible types, got "+typeOfFactor+" expected "+variableType+" at ("+ factorLine + "," + factorColumn + ")"));
+                                    }
                             }
                         }
                     }
@@ -196,7 +217,6 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode>{
             }
             throw new SemanticException(" Fatal: There were "+semanticExceptions.size()+" errors compiling module, stopping");
         }
-
     }
 
 }

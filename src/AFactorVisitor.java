@@ -9,7 +9,9 @@ public class AFactorVisitor extends MiniPascalBaseVisitor<AFactorNode>{
            return new ANumberTerminalNode(number);
        }else if(ctx.STRINGLITERAL()!=null){
            String string = ctx.STRINGLITERAL().getText();
-           return new AStringLiteralNode(string);
+           AStringLiteralNode stringLiteralNode = new AStringLiteralNode(string);
+           stringLiteralNode.setStartToken(ctx.getStart());
+           return stringLiteralNode;
        }else if(ctx.CHARACTER()!=null){
            String character = ctx.CHARACTER().getText();
            return new ACharacterTerminalNode(character);

@@ -2,10 +2,9 @@ program myProgram;
 
 var
 num:integer;
+num2:integer;
 
 begin
     num:= 2;
     num2:= 'lol';
 end.
-
-

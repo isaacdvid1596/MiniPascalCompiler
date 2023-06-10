@@ -1,5 +1,8 @@
+import org.antlr.v4.runtime.Token;
+
 public class AStringLiteralNode extends AFactorNode{
     private String string;
+    Token startToken;
 
     public AStringLiteralNode(String string) {
         this.string = string;
@@ -8,5 +11,13 @@ public class AStringLiteralNode extends AFactorNode{
     @Override
     public String toString() {
         return this.string;
+    }
+
+    public void setStartToken(Token token){
+        this.startToken = token;
+    }
+
+    public Token getStartToken() {
+        return this.startToken;
     }
 }

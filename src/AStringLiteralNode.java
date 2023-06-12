@@ -2,7 +2,7 @@ import org.antlr.v4.runtime.Token;
 
 public class AStringLiteralNode extends AFactorNode{
     private String string;
-    Token startToken;
+    private Token startToken;
 
     public AStringLiteralNode(String string) {
         this.string = string;

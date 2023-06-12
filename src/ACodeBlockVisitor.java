@@ -172,9 +172,10 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode>{
                     for (AStatementNode stmtNode : statementNodes) {
                         if (stmtNode instanceof AAssignmentStatementNode) {
                             AAssignmentStatementNode assignmentStatementNode = (AAssignmentStatementNode) stmtNode;
+                            //CHECK WETHER VARIABLE IS JUST IDENTIFIER OR INDEX ACCESS
                             AVariableNode variableNode = assignmentStatementNode.getVariableNode();
+                            //get expression type // RIGHT SIDE
                             AExpressionNode expressionNode = assignmentStatementNode.getExpressionNode();
-                            //get expression type
                             ASimpleExpressionNode simpleExpressionNode = expressionNode.getaSimpleExpressionNode();
                             ATermNode termNode = simpleExpressionNode.getTermNode();
                             AFactorNode factorNode = termNode.getFactorNode();
@@ -190,6 +191,10 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode>{
                                 factorColumn = tokenTypeFactor.getCharPositionInLine();
                             }if(factorNode instanceof ANumberTerminalNode){
                                 typeOfFactor =  VariableType.INTEGER;
+                                ANumberTerminalNode numberTerminalNode = (ANumberTerminalNode) factorNode;
+                                tokenTypeFactor = numberTerminalNode.getStartToken();
+                                factorLine = tokenTypeFactor.getLine();
+                                factorColumn = tokenTypeFactor.getCharPositionInLine();
                             }
                             if (variableNode != null) {
                                 String variableName = variableNode.getIdentifier();

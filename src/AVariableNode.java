@@ -14,4 +14,8 @@ public class AVariableNode {
     public String getIdentifier() {
         return identifier;
     }
+
+    public AIndexAccessNode getIndexAccessNode() {
+        return indexAccessNode;
+    }
 }

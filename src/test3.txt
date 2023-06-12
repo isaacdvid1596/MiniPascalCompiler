@@ -3,8 +3,11 @@ program myProgram;
 var
 num:integer;
 num2:integer;
+num3:real;
+str:string;
 
 begin
-    num:= 2;
+    num:= 2.0;
+    str:= 'lol';
     num2:= 'lol';
 end.

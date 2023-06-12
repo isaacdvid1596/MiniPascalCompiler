@@ -20,4 +20,8 @@ public class AIndexAccessNode {
         this.expressions = expressions;
         this.rightBracket = rightBracket;
     }
+
+    public AExpressionNode getExpressionNode() {
+        return expressionNode;
+    }
 }

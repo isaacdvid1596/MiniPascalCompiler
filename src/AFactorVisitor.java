@@ -6,7 +6,9 @@ public class AFactorVisitor extends MiniPascalBaseVisitor<AFactorNode>{
            AIdentifierTerminalNode identifierTerminalNode = identifierTerminalVisitor.visit(ctx.identifier_terminal());
        }else if(ctx.NUMBER()!=null){
            String number =  ctx.NUMBER().getText();
-           return new ANumberTerminalNode(number);
+           ANumberTerminalNode numberTerminalNode = new ANumberTerminalNode(number);
+           numberTerminalNode.setStartToken(ctx.getStart());
+           return numberTerminalNode;
        }else if(ctx.STRINGLITERAL()!=null){
            String string = ctx.STRINGLITERAL().getText();
            AStringLiteralNode stringLiteralNode = new AStringLiteralNode(string);

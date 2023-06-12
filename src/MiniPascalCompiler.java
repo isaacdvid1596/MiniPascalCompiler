@@ -3,7 +3,9 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.InputStream;
+import java.io.PrintWriter;
 
 public class MiniPascalCompiler {
     public static void main(String[] args) throws Exception {
@@ -19,5 +21,13 @@ public class MiniPascalCompiler {
         AProgramVisitor visitor = new AProgramVisitor();
         visitor.visit(tree);
         System.out.println("Compilation completed successfully!");
+        System.out.println("Generating LLVM IR...");
+        ALLVMVisitor llvmVisitor = new ALLVMVisitor();
+        String llvmCode = llvmVisitor.visit(tree);
+        String testLLVM = "test.ll";
+        PrintWriter writer = new PrintWriter(new FileWriter(testLLVM));
+        writer.println(llvmCode);
+        writer.close();
+        System.out.println("LLVM IR code written to "+testLLVM);
     }
 }

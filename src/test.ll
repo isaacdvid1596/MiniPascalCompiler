@@ -1,6 +1,5 @@
-define i32 @main() {
-%num = alloca i32
-%num2 = alloca i32
+define void @main() {
+%name = alloca null
  ret i32 0
 }
 

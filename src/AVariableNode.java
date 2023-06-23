@@ -18,4 +18,11 @@ public class AVariableNode {
     public AIndexAccessNode getIndexAccessNode() {
         return indexAccessNode;
     }
+
+    public boolean hasIndexAccess(){
+        if(indexAccessNode!=null){
+            return true;
+        }
+        return false;
+    }
 }

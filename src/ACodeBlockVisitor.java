@@ -1,10 +1,11 @@
 import org.antlr.v4.runtime.Token;
 import org.stringtemplate.v4.ST;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode>{
+public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode> {
     private List<AVarDeclarationNode> varDeclarations = new ArrayList<>();
     private List<AFunctionDeclarationNode> functionDeclarations = new ArrayList<>();
     private List<ACompoundStatementNode> compoundStatements = new ArrayList<>();
@@ -18,22 +19,22 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode>{
 
         symbolTable.enterScope();
 
-        if(ctx.var_declaration()!=null){
-            for(MiniPascalParser.Var_declarationContext varDeclarationContext : ctx.var_declaration()){
+        if (ctx.var_declaration() != null) {
+            for (MiniPascalParser.Var_declarationContext varDeclarationContext : ctx.var_declaration()) {
                 AVarDeclarationVisitor varDeclarationVisitor = new AVarDeclarationVisitor();
                 AVarDeclarationNode varDeclarationNode = varDeclarationVisitor.visit(varDeclarationContext);
                 varDeclarations.add(varDeclarationNode);
             }
         }
-        if(ctx.function_declaration()!=null){
-            for(MiniPascalParser.Function_declarationContext functionDeclarationContext: ctx.function_declaration()){
+        if (ctx.function_declaration() != null) {
+            for (MiniPascalParser.Function_declarationContext functionDeclarationContext : ctx.function_declaration()) {
                 AFunctionDeclarationVisitor aFunctionDeclarationVisit = new AFunctionDeclarationVisitor();
                 AFunctionDeclarationNode functionDeclarationNode = aFunctionDeclarationVisit.visit(functionDeclarationContext);
                 functionDeclarations.add(functionDeclarationNode);
             }
         }
-        if(ctx.compound_statement()!=null){
-            for(MiniPascalParser.Compound_statementContext compoundStatementContext: ctx.compound_statement()){
+        if (ctx.compound_statement() != null) {
+            for (MiniPascalParser.Compound_statementContext compoundStatementContext : ctx.compound_statement()) {
                 ACompoundStatementVisitor compoundStatementVisitor = new ACompoundStatementVisitor();
                 ACompoundStatementNode compoundStatementNode = compoundStatementVisitor.visit(compoundStatementContext);
                 compoundStatements.add(compoundStatementNode);
@@ -43,29 +44,48 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode>{
 
         symbolTable.exitScope();
 
-        ACodeBlockNode codeBlockNode = new ACodeBlockNode(varDeclarations,functionDeclarations,compoundStatements,programEndMarker);
+        ACodeBlockNode codeBlockNode = new ACodeBlockNode(varDeclarations, functionDeclarations, compoundStatements, programEndMarker);
         codeBlockNode.setStartToken(ctx.getStop());
-        validateCodeBlock(codeBlockNode);
+        validateCodeBlock(codeBlockNode, ctx);
         return codeBlockNode;
     }
 
-    private void validateCodeBlock(ACodeBlockNode codeBlockNode) {
+    private void validateCodeBlock(ACodeBlockNode codeBlockNode, MiniPascalParser.Code_BlockContext ctx) {
         //validate var_declaration*
-        for(AVarDeclarationNode varDeclarationNode: codeBlockNode.getVarDeclarations()){
-            for(AVariableDeclarationNode variable: varDeclarationNode.getVariableDeclarations()){
+        for (AVarDeclarationNode varDeclarationNode : codeBlockNode.getVarDeclarations()) {
+            for (AVariableDeclarationNode variable : varDeclarationNode.getVariableDeclarations()) {
                 String varName = variable.getIdentifier();
-                if(symbolTable.containsVariable(varName)){
+                ATypeNode typeNode = variable.getType();
+                if (symbolTable.containsVariable(varName)) {
                     Token token = variable.getStartToken();
                     int line = token.getLine();
                     int column = token.getCharPositionInLine();
-                    semanticExceptions.add(new SemanticException("Duplicate identifier "+token.getText()+" in ("+line+","+column+")"));
-                }else{
-                    VariableType variableType = variable.getVariableType();
-                    symbolTable.addVariable(varName,variableType);
+                    semanticExceptions.add(new SemanticException("Duplicate identifier " + token.getText() + " in (" + line + "," + column + ")"));
+                } else {
+                    if(typeNode instanceof AArraySpecifierNode){
+                        AArraySpecifierNode arraySpecifierNode = (AArraySpecifierNode) typeNode;
+                        if(arraySpecifierNode!=null){
+                            VariableType variableType = arraySpecifierNode.getVariableType();
+                            if(variableType == VariableType.INTEGER){
+                                symbolTable.addVariable(varName, VariableType.INTEGER);
+                            }else if(variableType == VariableType.BOOLEAN){
+                                symbolTable.addVariable(varName, VariableType.BOOLEAN);
+                            }else if(variableType == VariableType.CHAR){
+                                symbolTable.addVariable(varName,VariableType.CHAR);
+                            }else if(variableType == VariableType.REAL){
+                                symbolTable.addVariable(varName,VariableType.REAL);
+                            }
+                        }
+                    } else {
+                        VariableType variableType = variable.getVariableType();
+                        symbolTable.addVariable(varName, variableType);
+                    }
                 }
             }
         }
-        //validate function_declaration*
+
+
+    //validate function_declaration*
 
         for(AFunctionDeclarationNode functionDeclarationNode: codeBlockNode.getFunctionDeclarations()){
             String functionIdentifier = functionDeclarationNode.getIdentifier();

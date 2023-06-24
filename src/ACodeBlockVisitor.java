@@ -2,6 +2,7 @@ import org.antlr.v4.runtime.Token;
 import org.stringtemplate.v4.ST;
 
 import java.lang.reflect.Type;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -203,11 +204,17 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode> {
                             Token tokenTypeFactor = null;
                             int factorLine = 0;
                             int factorColumn = 0;
-//                            System.out.println(factorNode.toString());
                             if(factorNode instanceof AStringLiteralNode){
 //                                System.out.println("I AM STRING");
-                                typeOfFactor = VariableType.STRING;
                                 AStringLiteralNode stringLiteralNode = (AStringLiteralNode) factorNode;
+                                String value = stringLiteralNode.getString();
+//                                System.out.println(value);
+                                if(value.length() > 3){
+                                    typeOfFactor =  VariableType.STRING;
+                                }else{
+                                    System.out.println("entering");
+                                    typeOfFactor =  VariableType.CHAR;
+                                }
                                 tokenTypeFactor = stringLiteralNode.getStartToken();
                                 factorLine = tokenTypeFactor.getLine();
                                 factorColumn = tokenTypeFactor.getCharPositionInLine();

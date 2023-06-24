@@ -8,15 +8,15 @@ var
   sal:char;
 begin
   nums[1] := 1;
-  nums[2] := 's';
+  nums[2] := 'b';
   nums[3] := true;
-  nums[4] := 8;
+  nums[4] := 'lol';
   nums[5] := 10;
-  nums[6] := 'a';
+  nums[6] := 'aaa';
   sum := 0;
   mul := 1;
   for i := 1 to 5 do
-    sum := sum + nums[i];
+    sum := 'x';
     mul:= mul * 5;
     divi1:= 4 div 4;
     div2:= 4 / 4;

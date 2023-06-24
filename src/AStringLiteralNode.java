@@ -20,4 +20,8 @@ public class AStringLiteralNode extends AFactorNode{
     public Token getStartToken() {
         return this.startToken;
     }
+
+    public String getString() {
+        return string;
+    }
 }

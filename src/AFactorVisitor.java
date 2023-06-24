@@ -15,8 +15,10 @@ public class AFactorVisitor extends MiniPascalBaseVisitor<AFactorNode>{
            stringLiteralNode.setStartToken(ctx.getStart());
            return stringLiteralNode;
        }else if(ctx.CHARACTER()!=null){
-           String character = ctx.CHARACTER().getText();
-           return new ACharacterTerminalNode(character);
+           char character = ctx.CHARACTER().getText().charAt(0);
+           ACharacterTerminalNode characterTerminalNode = new ACharacterTerminalNode(character);
+           characterTerminalNode.setStartToken(ctx.getStart());
+           return characterTerminalNode;
        }else if(ctx.LPAREN()!=null && ctx.expression()!=null && ctx.RPAREN()!=null){
            String leftParenthesis = ctx.LPAREN().getText();
            AExpressionVisitor expressionVisitor = new AExpressionVisitor();

@@ -7,11 +7,12 @@ var
   saludo: string;
   sal:char;
 begin
-  nums[1] := 's';
-  nums[2] := 4;
-  nums[3] := 6;
+  nums[1] := 1;
+  nums[2] := 's';
+  nums[3] := true;
   nums[4] := 8;
   nums[5] := 10;
+  nums[6] := 'a';
   sum := 0;
   mul := 1;
   for i := 1 to 5 do

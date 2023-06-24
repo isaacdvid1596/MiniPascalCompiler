@@ -203,31 +203,58 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode> {
                             Token tokenTypeFactor = null;
                             int factorLine = 0;
                             int factorColumn = 0;
+//                            System.out.println(factorNode.toString());
                             if(factorNode instanceof AStringLiteralNode){
+//                                System.out.println("I AM STRING");
                                 typeOfFactor = VariableType.STRING;
                                 AStringLiteralNode stringLiteralNode = (AStringLiteralNode) factorNode;
                                 tokenTypeFactor = stringLiteralNode.getStartToken();
                                 factorLine = tokenTypeFactor.getLine();
                                 factorColumn = tokenTypeFactor.getCharPositionInLine();
                             }if(factorNode instanceof ANumberTerminalNode){
+//                                System.out.println("I AM INT");
                                 typeOfFactor =  VariableType.INTEGER;
                                 ANumberTerminalNode numberTerminalNode = (ANumberTerminalNode) factorNode;
                                 tokenTypeFactor = numberTerminalNode.getStartToken();
                                 factorLine = tokenTypeFactor.getLine();
                                 factorColumn = tokenTypeFactor.getCharPositionInLine();
+                            }if(factorNode instanceof ACharacterTerminalNode){
+                                System.out.println("I AM CHAR");
+                                typeOfFactor =  VariableType.CHAR;
+                                ACharacterTerminalNode characterTerminalNode = (ACharacterTerminalNode) factorNode;
+                                tokenTypeFactor = characterTerminalNode.getStartToken();
+                                factorLine = tokenTypeFactor.getLine();
+                                factorColumn = tokenTypeFactor.getCharPositionInLine();
                             }
                             if (variableNode != null) {
-                                String variableName = variableNode.getIdentifier();
-                                VariableType variableType = symbolTable.getVariableType(variableName);
-                                if (!symbolTable.containsVariable(variableName)) {
-                                    Token token = assignmentStatementNode.getStartToken();
-                                    int line = token.getLine();
-                                    int column = token.getCharPositionInLine();
-                                    semanticExceptions.add(new SemanticException("Undeclared variable " + variableName + " used in assignment at (" + line + "," + column + ")"));
-                                }
-                                    if(variableType!=null && typeOfFactor!=null && !variableType.equals(typeOfFactor)){
-                                        semanticExceptions.add(new SemanticException("Incompatible types, got "+typeOfFactor+" expected "+variableType+" at ("+ factorLine + "," + factorColumn + ")"));
+                                if(variableNode.hasIndexAccess()){
+                                    String id = variableNode.getIdentifier();
+//                                    System.out.println(id);
+                                    VariableType variableType = symbolTable.getVariableType(id);
+//                                    System.out.println(variableType);
+//                                    System.out.println(typeOfFactor);
+                                    if(!symbolTable.containsVariable(id)){
+                                        Token token = assignmentStatementNode.getStartToken();
+                                        int line = token.getLine();
+                                        int column = token.getCharPositionInLine();
+                                        semanticExceptions.add(new SemanticException("Undeclared variable " + id + " used in assignment at (" + line + "," + column + ")"));
                                     }
+                                    if (variableType != null && typeOfFactor != null && !variableType.equals(typeOfFactor)) {
+                                        semanticExceptions.add(new SemanticException("Incompatible types, got " + typeOfFactor + " expected " + variableType + " at (" + factorLine + "," + factorColumn + ")"));
+                                    }
+                                }else{
+                                    String variableName = variableNode.getIdentifier();
+                                    VariableType variableType = symbolTable.getVariableType(variableName);
+                                    if (!symbolTable.containsVariable(variableName)) {
+                                        Token token = assignmentStatementNode.getStartToken();
+                                        int line = token.getLine();
+                                        int column = token.getCharPositionInLine();
+                                        semanticExceptions.add(new SemanticException("Undeclared variable " + variableName + " used in assignment at (" + line + "," + column + ")"));
+                                    }
+                                    if (variableType != null && typeOfFactor != null && !variableType.equals(typeOfFactor)) {
+                                        semanticExceptions.add(new SemanticException("Incompatible types, got " + typeOfFactor + " expected " + variableType + " at (" + factorLine + "," + factorColumn + ")"));
+                                    }
+                                }
                             }
                         }
                     }

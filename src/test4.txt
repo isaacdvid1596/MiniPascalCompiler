@@ -12,5 +12,6 @@ end;
 begin
   write('Enter a number to calculate its factorial: ');
   readln(num);
-  writeln('Factorial of ', num, ' is ', calculateFactorial(num));
+  numb2:=calculateFactorial(num,numb2);
+  writeln('Factorial of ', num, ' is ', numb2);
 end.

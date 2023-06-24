@@ -1,0 +1,8 @@
+program Example1;
+var
+  x: integer;
+  x: string;
+begin
+    x:=2;
+end
+.

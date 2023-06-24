@@ -208,11 +208,9 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode> {
 //                                System.out.println("I AM STRING");
                                 AStringLiteralNode stringLiteralNode = (AStringLiteralNode) factorNode;
                                 String value = stringLiteralNode.getString();
-//                                System.out.println(value);
                                 if(value.length() > 3){
                                     typeOfFactor =  VariableType.STRING;
                                 }else{
-                                    System.out.println("entering");
                                     typeOfFactor =  VariableType.CHAR;
                                 }
                                 tokenTypeFactor = stringLiteralNode.getStartToken();
@@ -220,8 +218,16 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode> {
                                 factorColumn = tokenTypeFactor.getCharPositionInLine();
                             }if(factorNode instanceof ANumberTerminalNode){
 //                                System.out.println("I AM INT");
-                                typeOfFactor =  VariableType.INTEGER;
                                 ANumberTerminalNode numberTerminalNode = (ANumberTerminalNode) factorNode;
+                                String value = numberTerminalNode.getNumber();
+                                if(value.contains(".")){
+                                    tokenTypeFactor = numberTerminalNode.getStartToken();
+                                    factorLine = tokenTypeFactor.getLine();
+                                    factorColumn = tokenTypeFactor.getCharPositionInLine();
+                                    typeOfFactor = VariableType.REAL;
+                                }else{
+                                    typeOfFactor =  VariableType.INTEGER;
+                                }
                                 tokenTypeFactor = numberTerminalNode.getStartToken();
                                 factorLine = tokenTypeFactor.getLine();
                                 factorColumn = tokenTypeFactor.getCharPositionInLine();

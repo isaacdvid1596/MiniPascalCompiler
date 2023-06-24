@@ -1,8 +1,13 @@
-program hello;
+program Example2;
+
 var
-  name: array[0..5] of string;
+num:integer;
+num2:integer;
+num3:real;
+str:string;
+
 begin
-  write('What is your name?');
-  read(name);
-  write('Hello, ', name, '!');
+    num:= 3;
+    str:= 'l';
+    num2:= 'lol';
 end.

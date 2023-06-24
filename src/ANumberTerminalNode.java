@@ -21,5 +21,9 @@ public class ANumberTerminalNode extends AFactorNode{
         return this.startToken;
     }
 
+    public String getNumber() {
+        return number;
+    }
+
     //validation to confirm if real or integer?
 }

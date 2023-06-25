@@ -4,4 +4,8 @@ public class AIntegerType extends ATypeNode{
     public AIntegerType(String integer) {
         this.integer = integer;
     }
+
+    public String getInteger() {
+        return integer;
+    }
 }

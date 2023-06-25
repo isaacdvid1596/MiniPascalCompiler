@@ -1,3 +1,5 @@
+import org.antlr.v4.runtime.Token;
+
 import java.util.ArrayList;
 
 public class AExpressionNode {
@@ -9,6 +11,7 @@ public class AExpressionNode {
     private ArrayList<ASimpleExpressionNode> aSimpleExpressionNodes;
     private ArrayList<String> semicolons;
     private String semicolon;
+    private Token startToken;
 
     public AExpressionNode(ASimpleExpressionNode aSimpleExpressionNode) {
         this.aSimpleExpressionNode = aSimpleExpressionNode;
@@ -45,5 +48,13 @@ public class AExpressionNode {
 
     public ArrayList<ASimpleExpressionNode> getaSimpleExpressionNodes() {
         return aSimpleExpressionNodes;
+    }
+
+    public void setStartToken(Token token){
+        this.startToken = token;
+    }
+
+    public Token getStartToken() {
+        return this.startToken;
     }
 }

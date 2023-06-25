@@ -34,4 +34,8 @@ public class AIdentifierTerminalNode extends AFactorNode{
         this.notKeyword = notKeyword;
         this.factor = factor;
     }
+
+    public String getIdentifier() {
+        return identifier;
+    }
 }

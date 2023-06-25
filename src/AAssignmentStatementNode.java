@@ -27,6 +27,17 @@ public class AAssignmentStatementNode extends AStatementNode{
         return variableNode;
     }
 
+    public boolean hasFunctionCall(){
+        if(this.functionCallNode !=null){
+            return true;
+        }
+        return false;
+    }
+
+    public AFunctionCallNode getFunctionCallNode() {
+        return functionCallNode;
+    }
+
     public void setStartToken(Token token){
         this.startToken = token;
     }

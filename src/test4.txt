@@ -8,10 +8,15 @@ begin
     numb2:=2;
     calculateFactorial := 'lol';
 end;
-
+function calculateFactorial(n: integer): integer;
+begin
+    numb2:=2;
+    calculateFactorial := 'lol';
+end;
 begin
   write('Enter a number to calculate its factorial: ');
   readln(num);
-  numb2:=calculateFactorial(num,numb2);
+  calculateFactorial(num,numb2);
+  numb2:= calculateFactorial('lol');
   writeln('Factorial of ', num, ' is ', numb2);
 end.

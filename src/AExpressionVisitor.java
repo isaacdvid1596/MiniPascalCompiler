@@ -9,8 +9,11 @@ public class AExpressionVisitor extends MiniPascalBaseVisitor<AExpressionNode>{
     ArrayList<String> ors = new ArrayList<>();
     ArrayList<ASimpleExpressionNode> simpleExpressions = new ArrayList<>();
     ArrayList<String> semicolons = new ArrayList<>();
+
+    private SymbolTable symbolTable = SymbolTable.getInstance();
     @Override
     public AExpressionNode visitExpresion(MiniPascalParser.ExpresionContext ctx) {
+        symbolTable.enterScope();
         ASimpleExpressionVisitor simpleExpressionVisitor = new ASimpleExpressionVisitor();
         ASimpleExpressionNode simpleExpressionNode = simpleExpressionVisitor.visit(ctx.simple_expression(0));
         if(ctx.relop()!=null){
@@ -67,6 +70,9 @@ public class AExpressionVisitor extends MiniPascalBaseVisitor<AExpressionNode>{
             return new AExpressionNode(simpleExpressionNode,orKeywordWrapper,simpleExpressions,semicolons);
         }
         String semicolon = ctx.SEMICOLON(ctx.getChildCount()-1).getText();
-        return new AExpressionNode(simpleExpressionNode,semicolon);
+        symbolTable.exitScope();
+        AExpressionNode expressionNode = new AExpressionNode(simpleExpressionNode,semicolon);
+        expressionNode.setStartToken(ctx.getStart());
+        return  expressionNode;
     }
 }

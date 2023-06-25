@@ -89,7 +89,9 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode> {
     //validate function_declaration*
 
         for(AFunctionDeclarationNode functionDeclarationNode: codeBlockNode.getFunctionDeclarations()){
+            ArrayList<VariableType> variableTypes = new ArrayList<>();
             String functionIdentifier = functionDeclarationNode.getIdentifier();
+//            System.out.println(functionIdentifier);
             if(symbolTable.containsVariable(functionIdentifier)){
                 Token token = functionDeclarationNode.getStartToken();
                 int line = token.getLine();
@@ -103,7 +105,7 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode> {
             ArrayList<AParameterDeclarationNode> parameters = new ArrayList<>();
             AParameterDeclarationNode parameterDeclarationNode = parameterListNode.getaParameterDeclaration();
             if(parameterDeclarationNode!=null){
-                parameters.add(parameterDeclarationNode);
+                parameters.add(0,parameterDeclarationNode);
             }
             ArrayList<AParameterDeclarationNode> parametersList = parameterListNode.getParameterDeclarations();
             if(parametersList!=null){
@@ -113,6 +115,7 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode> {
             }
             for (AParameterDeclarationNode parameter : parameters) {
                 String parameterId = parameter.getIdentifier();
+                variableTypes.add(parameter.getVariableType());
                 if(symbolTable.containsVariable(parameterId)){
                     Token token =  parameter.getStartToken();
                     int line = token.getLine();
@@ -122,13 +125,17 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode> {
                     symbolTable.addVariable(parameterId,parameter.getVariableType());
                 }
             }
+//            symbolTable.addFunction(functionIdentifier,null,variableTypes);
+
 
             //validar el type de func = return type, recorrer profundidad hasta encontrar el assignment
             ATypeNode typeNode = functionDeclarationNode.getType();
             String type = "";
             if(typeNode instanceof AIntegerType){
                 AIntegerType integer = (AIntegerType) typeNode;
-                 type = integer.toString().toUpperCase();
+                     VariableType variableType = VariableType.INTEGER;
+                     symbolTable.addFunction(functionIdentifier,variableType,variableTypes);
+
             }else if(typeNode instanceof AStringType){
                 AStringType string = (AStringType) typeNode;
                 type = string.toString().toUpperCase();
@@ -141,25 +148,7 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode> {
             AStatementListNode statementListNode = compoundStatementNode.getStatementListNode();
             AStatementNode statementNode = statementListNode.getStatementNode();
             ArrayList<AStatementNode> statementNodes = statementListNode.getStatementNodes();
-//            if(!statementNodes.isEmpty()){
-//                for (AStatementNode node : statementNodes) {
-//                    if(node instanceof AAssignmentStatementNode){
-//                        AAssignmentStatementNode assignmentStatementNode = (AAssignmentStatementNode) node;
-//                        AExpressionNode expressionNode = assignmentStatementNode.getExpressionNode();
-//                        //asumiendo que solo hay un simple expression, luego verificar si no
-//                        ASimpleExpressionNode simpleExpressionNode = expressionNode.getaSimpleExpressionNode();
-//                        //asumiendo que solo hay un term, pueden haber mas, verificar eso luego
-//                        ATermNode termNode = simpleExpressionNode.getTermNode();
-//                        AFactorNode factorNode = termNode.getFactorNode();
-//                        if(factorNode instanceof ANumberTerminalNode){
-//                            String variableType = VariableType.INTEGER.toString();
-//                            if(!type.equals(variableType)){
-//                                semanticExceptions.add(new SemanticException("Incompatible types: got "+variableType+" expected "+type));
-//                            }
-//                        }
-//                    }
-//                }
-//            }
+
             //validate assignment if variable is declared in var_declarations and in symbol table
             AAssignmentStatementNode assignmentStatementNode = (AAssignmentStatementNode) statementNode;
             String variableName = assignmentStatementNode.getVariableNode().getIdentifier();
@@ -178,6 +167,7 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode> {
             AStatementListNode statementListNode = compoundStatementNode.getStatementListNode();
             AStatementNode statementNode = statementListNode.getStatementNode();
             ArrayList<AStatementNode> statementNodes = statementListNode.getStatementNodes();
+            statementNodes.add(0,statementNode);
                 if(statementNode instanceof AAssignmentStatementNode){
                     //validate assignment if variable is declared in var_declarations and in system table
                     AAssignmentStatementNode assignmentStatementNode = (AAssignmentStatementNode) statementNode;
@@ -191,81 +181,162 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode> {
                 }
                 if (statementNodes != null && !statementNodes.isEmpty()) {
                     for (AStatementNode stmtNode : statementNodes) {
+                        if(stmtNode instanceof AWriteStatementNode){
+//                            System.out.println("print if write statement");
+                        }
+                        if(stmtNode instanceof  AFunctionCallNode){
+                            //asegurarse lista de argumentos son igual en cantidad y tipo de parametros en declaracion
+//                            System.out.println("print if stmt a function call statement");
+                            AFunctionCallNode functionCallNode = (AFunctionCallNode) stmtNode;
+                            String functionName = functionCallNode.getIdentifier();
+//                            System.out.println(functionName);
+//                            System.out.println(symbolTable.containsFunction(functionName));
+                            if(symbolTable.containsFunction(functionName)){
+                                int expectedParameterCount = symbolTable.getFunctionParameterCount(functionName);
+//                                System.out.println(expectedParameterCount);
+                                ArrayList<VariableType> expectedParameterTypes = symbolTable.getFunctionParameterTypes(functionName);
+                                AArgumentListNode argumentListNode = functionCallNode.getArgumentListNode();
+                                AExpressionNode expressionNode = argumentListNode.getFirstExpression();
+                                List<AExpressionNode> expressionNodes = argumentListNode.getExpressionNodes();
+                                expressionNodes.add(0,expressionNode);
+                                //check if number of args incorrect
+                                if(expressionNodes.size()!=expectedParameterCount){
+                                    Token token = functionCallNode.getStartToken();
+                                    int line = token.getLine();
+                                    int column = token.getCharPositionInLine();
+                                    semanticExceptions.add(new SemanticException("Incorrect number of arguments for function " + functionName + " at (" + line + "," + column + ")"));
+                                }
+                                //check if type of arguments are correct
+//                                else{
+//                                    for(int i = 0; i < expressionNodes.size() ; i++){
+//                                        AExpressionNode argument = expressionNodes.get(i);
+//                                        VariableType expectedType = expectedParameterTypes.get(i);
+//                                        VariableType argumentType = val
+//                                    }
+//                                }
+                            }
+                        }
                         if (stmtNode instanceof AAssignmentStatementNode) {
                             AAssignmentStatementNode assignmentStatementNode = (AAssignmentStatementNode) stmtNode;
                             //CHECK WETHER VARIABLE IS JUST IDENTIFIER OR INDEX ACCESS
                             AVariableNode variableNode = assignmentStatementNode.getVariableNode();
                             //get expression type // RIGHT SIDE
-                            AExpressionNode expressionNode = assignmentStatementNode.getExpressionNode();
-                            ASimpleExpressionNode simpleExpressionNode = expressionNode.getaSimpleExpressionNode();
-                            ATermNode termNode = simpleExpressionNode.getTermNode();
-                            AFactorNode factorNode = termNode.getFactorNode();
-                            VariableType typeOfFactor = null;
-                            Token tokenTypeFactor = null;
-                            int factorLine = 0;
-                            int factorColumn = 0;
-                            if(factorNode instanceof AStringLiteralNode){
-//                                System.out.println("I AM STRING");
-                                AStringLiteralNode stringLiteralNode = (AStringLiteralNode) factorNode;
-                                String value = stringLiteralNode.getString();
-                                if(value.length() > 3){
-                                    typeOfFactor =  VariableType.STRING;
-                                }else{
-                                    typeOfFactor =  VariableType.CHAR;
+                            //check whether is expression of function call
+                            if (assignmentStatementNode.hasFunctionCall()) {
+                                //asegurarse lista de argumentos son igual en cantidad y tipo de parametros en declaracion
+//                            System.out.println("print if stmt a function call statement");
+                                AFunctionCallNode functionCallNode = assignmentStatementNode.getFunctionCallNode();
+                                String functionName = functionCallNode.getIdentifier();
+//                            System.out.println(functionName);
+//                            System.out.println(symbolTable.containsFunction(functionName));
+                                if(symbolTable.containsFunction(functionName)){
+                                    int expectedParameterCount = symbolTable.getFunctionParameterCount(functionName);
+//                                System.out.println(expectedParameterCount);
+                                    ArrayList<VariableType> expectedParameterTypes = symbolTable.getFunctionParameterTypes(functionName);
+                                    AArgumentListNode argumentListNode = functionCallNode.getArgumentListNode();
+                                    AExpressionNode expressionNode = argumentListNode.getFirstExpression();
+                                    List<AExpressionNode> expressionNodes = argumentListNode.getExpressionNodes();
+                                    expressionNodes.add(0,expressionNode);
+                                    //check if number of args incorrect
+                                    if(expressionNodes.size()!=expectedParameterCount){
+                                        Token token = functionCallNode.getStartToken();
+                                        int line = token.getLine();
+                                        int column = token.getCharPositionInLine();
+                                        semanticExceptions.add(new SemanticException("Incorrect number of arguments for function " + functionName + " at (" + line + "," + column + ")"));
+                                    }
+                                else{
+                                    for(int i = 0; i < expressionNodes.size() ; i++){
+                                        AExpressionNode argument = expressionNodes.get(i);
+                                        VariableType expectedType = expectedParameterTypes.get(i);
+                                        ASimpleExpressionNode simpleExpressionNode = argument.getaSimpleExpressionNode();
+                                        ATermNode termNode = simpleExpressionNode.getTermNode();
+                                        AFactorNode factorNode = termNode.getFactorNode();
+                                        if(factorNode instanceof AIdentifierTerminalNode){
+                                            AIdentifierTerminalNode id = (AIdentifierTerminalNode) factorNode;
+                                            VariableType argumentType = symbolTable.getVariableType(id.getIdentifier());
+                                            if(argumentType!=expectedType){
+                                                Token token = argument.getStartToken();
+                                                int line = token.getLine();
+                                                int column = token.getCharPositionInLine();
+                                                semanticExceptions.add(new SemanticException("Incompatible type for argument " + (i+1) + " in function " + functionName + " at (" + line + "," + column + ")"));
+                                            }
+                                        }
+                                    }
                                 }
-                                tokenTypeFactor = stringLiteralNode.getStartToken();
-                                factorLine = tokenTypeFactor.getLine();
-                                factorColumn = tokenTypeFactor.getCharPositionInLine();
-                            }if(factorNode instanceof ANumberTerminalNode){
+                                }
+                            } else {
+                                AExpressionNode expressionNode = assignmentStatementNode.getExpressionNode();
+                                ASimpleExpressionNode simpleExpressionNode = expressionNode.getaSimpleExpressionNode();
+                                ATermNode termNode = simpleExpressionNode.getTermNode();
+                                AFactorNode factorNode = termNode.getFactorNode();
+                                VariableType typeOfFactor = null;
+                                Token tokenTypeFactor = null;
+                                int factorLine = 0;
+                                int factorColumn = 0;
+                                if (factorNode instanceof AStringLiteralNode) {
+//                                System.out.println("I AM STRING");
+                                    AStringLiteralNode stringLiteralNode = (AStringLiteralNode) factorNode;
+                                    String value = stringLiteralNode.getString();
+                                    if (value.length() > 3) {
+                                        typeOfFactor = VariableType.STRING;
+                                    } else {
+                                        typeOfFactor = VariableType.CHAR;
+                                    }
+                                    tokenTypeFactor = stringLiteralNode.getStartToken();
+                                    factorLine = tokenTypeFactor.getLine();
+                                    factorColumn = tokenTypeFactor.getCharPositionInLine();
+                                }
+                                if (factorNode instanceof ANumberTerminalNode) {
 //                                System.out.println("I AM INT");
-                                ANumberTerminalNode numberTerminalNode = (ANumberTerminalNode) factorNode;
-                                String value = numberTerminalNode.getNumber();
-                                if(value.contains(".")){
+                                    ANumberTerminalNode numberTerminalNode = (ANumberTerminalNode) factorNode;
+                                    String value = numberTerminalNode.getNumber();
+                                    if (value.contains(".")) {
+                                        tokenTypeFactor = numberTerminalNode.getStartToken();
+                                        factorLine = tokenTypeFactor.getLine();
+                                        factorColumn = tokenTypeFactor.getCharPositionInLine();
+                                        typeOfFactor = VariableType.REAL;
+                                    } else {
+                                        typeOfFactor = VariableType.INTEGER;
+                                    }
                                     tokenTypeFactor = numberTerminalNode.getStartToken();
                                     factorLine = tokenTypeFactor.getLine();
                                     factorColumn = tokenTypeFactor.getCharPositionInLine();
-                                    typeOfFactor = VariableType.REAL;
-                                }else{
-                                    typeOfFactor =  VariableType.INTEGER;
                                 }
-                                tokenTypeFactor = numberTerminalNode.getStartToken();
-                                factorLine = tokenTypeFactor.getLine();
-                                factorColumn = tokenTypeFactor.getCharPositionInLine();
-                            }if(factorNode instanceof ACharacterTerminalNode){
-                                System.out.println("I AM CHAR");
-                                typeOfFactor =  VariableType.CHAR;
-                                ACharacterTerminalNode characterTerminalNode = (ACharacterTerminalNode) factorNode;
-                                tokenTypeFactor = characterTerminalNode.getStartToken();
-                                factorLine = tokenTypeFactor.getLine();
-                                factorColumn = tokenTypeFactor.getCharPositionInLine();
-                            }
-                            if (variableNode != null) {
-                                if(variableNode.hasIndexAccess()){
-                                    String id = variableNode.getIdentifier();
-//                                    System.out.println(id);
-                                    VariableType variableType = symbolTable.getVariableType(id);
-//                                    System.out.println(variableType);
-//                                    System.out.println(typeOfFactor);
-                                    if(!symbolTable.containsVariable(id)){
-                                        Token token = assignmentStatementNode.getStartToken();
-                                        int line = token.getLine();
-                                        int column = token.getCharPositionInLine();
-                                        semanticExceptions.add(new SemanticException("Undeclared variable " + id + " used in assignment at (" + line + "," + column + ")"));
-                                    }
-                                    if (variableType != null && typeOfFactor != null && !variableType.equals(typeOfFactor)) {
-                                        semanticExceptions.add(new SemanticException("Incompatible types, got " + typeOfFactor + " expected " + variableType + " at (" + factorLine + "," + factorColumn + ")"));
-                                    }
-                                }else{
-                                    String variableName = variableNode.getIdentifier();
-                                    VariableType variableType = symbolTable.getVariableType(variableName);
-                                    if (!symbolTable.containsVariable(variableName)) {
-                                        Token token = assignmentStatementNode.getStartToken();
-                                        int line = token.getLine();
-                                        int column = token.getCharPositionInLine();
-                                        semanticExceptions.add(new SemanticException("Undeclared variable " + variableName + " used in assignment at (" + line + "," + column + ")"));
-                                    }
-                                    if (variableType != null && typeOfFactor != null && !variableType.equals(typeOfFactor)) {
-                                        semanticExceptions.add(new SemanticException("Incompatible types, got " + typeOfFactor + " expected " + variableType + " at (" + factorLine + "," + factorColumn + ")"));
+                                if (factorNode instanceof ACharacterTerminalNode) {
+                                    System.out.println("I AM CHAR");
+                                    typeOfFactor = VariableType.CHAR;
+                                    ACharacterTerminalNode characterTerminalNode = (ACharacterTerminalNode) factorNode;
+                                    tokenTypeFactor = characterTerminalNode.getStartToken();
+                                    factorLine = tokenTypeFactor.getLine();
+                                    factorColumn = tokenTypeFactor.getCharPositionInLine();
+                                }
+                                if (variableNode != null) {
+                                    if (variableNode.hasIndexAccess()) {
+                                        String id = variableNode.getIdentifier();
+
+                                        VariableType variableType = symbolTable.getVariableType(id);
+
+                                        if (!symbolTable.containsVariable(id)) {
+                                            Token token = assignmentStatementNode.getStartToken();
+                                            int line = token.getLine();
+                                            int column = token.getCharPositionInLine();
+                                            semanticExceptions.add(new SemanticException("Undeclared variable " + id + " used in assignment at (" + line + "," + column + ")"));
+                                        }
+                                        if (variableType != null && typeOfFactor != null && !variableType.equals(typeOfFactor)) {
+                                            semanticExceptions.add(new SemanticException("Incompatible types, got " + typeOfFactor + " expected " + variableType + " at (" + factorLine + "," + factorColumn + ")"));
+                                        }
+                                    } else {
+                                        String variableName = variableNode.getIdentifier();
+                                        VariableType variableType = symbolTable.getVariableType(variableName);
+                                        if (!symbolTable.containsVariable(variableName)) {
+                                            Token token = assignmentStatementNode.getStartToken();
+                                            int line = token.getLine();
+                                            int column = token.getCharPositionInLine();
+                                            semanticExceptions.add(new SemanticException("Undeclared variable " + variableName + " used in assignment at (" + line + "," + column + ")"));
+                                        }
+                                        if (variableType != null && typeOfFactor != null && !variableType.equals(typeOfFactor)) {
+                                            semanticExceptions.add(new SemanticException("Incompatible types, got " + typeOfFactor + " expected " + variableType + " at (" + factorLine + "," + factorColumn + ")"));
+                                        }
                                     }
                                 }
                             }

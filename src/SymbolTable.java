@@ -1,14 +1,14 @@
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 public class SymbolTable {
     private static SymbolTable instance = null;
     private Stack<Map<String,VariableType>> scopeStack;
+    private Map<String,FunctionInfo> functionTable;
 
     // Private constructor to prevent instantiation
     private SymbolTable(){
         scopeStack = new Stack<>();
+        functionTable = new HashMap<>();
         enterScope();
     }
 
@@ -51,5 +51,55 @@ public class SymbolTable {
             }
         }
         return null;
+    }
+
+    //manejar funciones
+
+    public void addFunction(String functionName, VariableType returnType, ArrayList<VariableType> parameterTypes) {
+        FunctionInfo functionInfo = new FunctionInfo(returnType, parameterTypes);
+        functionTable.put(functionName, functionInfo);
+    }
+
+    public FunctionInfo getFunctionInfo(String functionName) {
+        return functionTable.get(functionName);
+    }
+
+    public boolean containsFunction(String functionName) {
+        return functionTable.containsKey(functionName);
+    }
+
+    public int getFunctionParameterCount(String functionName) {
+        FunctionInfo functionInfo = functionTable.get(functionName);
+        if (functionInfo != null) {
+            ArrayList<VariableType> parameterTypes = functionInfo.getParameterTypes();
+            return parameterTypes.size();
+        }
+        return 0;
+    }
+
+    public ArrayList<VariableType> getFunctionParameterTypes(String functionName) {
+        FunctionInfo functionInfo = functionTable.get(functionName);
+        if (functionInfo != null) {
+            return functionInfo.getParameterTypes();
+        }
+        return null;
+    }
+
+    public static class FunctionInfo {
+        private VariableType returnType;
+        private ArrayList<VariableType> parameterTypes;
+
+        public FunctionInfo(VariableType returnType, ArrayList<VariableType> parameterTypes) {
+            this.returnType = returnType;
+            this.parameterTypes = parameterTypes;
+        }
+
+        public VariableType getReturnType() {
+            return returnType;
+        }
+
+        public ArrayList<VariableType> getParameterTypes() {
+            return parameterTypes;
+        }
     }
 }

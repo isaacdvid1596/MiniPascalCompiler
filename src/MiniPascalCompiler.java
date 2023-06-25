@@ -24,7 +24,7 @@ public class MiniPascalCompiler {
         System.out.println("Generating LLVM IR...");
         ALLVMVisitor llvmVisitor = new ALLVMVisitor();
         String llvmCode = llvmVisitor.visit(tree);
-        String testLLVM = "test.ll";
+        String testLLVM = inputFile+".ll";
         PrintWriter writer = new PrintWriter(new FileWriter(testLLVM));
         writer.println(llvmCode);
         writer.close();

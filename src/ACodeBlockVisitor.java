@@ -186,11 +186,8 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode> {
                         }
                         if(stmtNode instanceof  AFunctionCallNode){
                             //asegurarse lista de argumentos son igual en cantidad y tipo de parametros en declaracion
-//                            System.out.println("print if stmt a function call statement");
                             AFunctionCallNode functionCallNode = (AFunctionCallNode) stmtNode;
                             String functionName = functionCallNode.getIdentifier();
-//                            System.out.println(functionName);
-//                            System.out.println(symbolTable.containsFunction(functionName));
                             if(symbolTable.containsFunction(functionName)){
                                 int expectedParameterCount = symbolTable.getFunctionParameterCount(functionName);
 //                                System.out.println(expectedParameterCount);
@@ -224,14 +221,10 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode> {
                             //check whether is expression of function call
                             if (assignmentStatementNode.hasFunctionCall()) {
                                 //asegurarse lista de argumentos son igual en cantidad y tipo de parametros en declaracion
-//                            System.out.println("print if stmt a function call statement");
                                 AFunctionCallNode functionCallNode = assignmentStatementNode.getFunctionCallNode();
                                 String functionName = functionCallNode.getIdentifier();
-//                            System.out.println(functionName);
-//                            System.out.println(symbolTable.containsFunction(functionName));
                                 if(symbolTable.containsFunction(functionName)){
                                     int expectedParameterCount = symbolTable.getFunctionParameterCount(functionName);
-//                                System.out.println(expectedParameterCount);
                                     ArrayList<VariableType> expectedParameterTypes = symbolTable.getFunctionParameterTypes(functionName);
                                     AArgumentListNode argumentListNode = functionCallNode.getArgumentListNode();
                                     AExpressionNode expressionNode = argumentListNode.getFirstExpression();

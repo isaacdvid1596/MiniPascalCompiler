@@ -4,7 +4,6 @@ public class ALLVMTypeVisitor extends MiniPascalBaseVisitor<String>{
         StringBuilder llvmCode = new StringBuilder();
 
         if(ctx.INTEGER()!=null){
-            String integerKeyword = ctx.INTEGER().getText();
             return "i32";
         }else if(ctx.REAL()!=null){
             return "float";

@@ -1,0 +1,9 @@
+program Example1;
+var
+  x: integer;
+  a: integer;
+begin
+    x:=2;
+    a:=3;
+end
+.

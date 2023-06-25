@@ -1,0 +1,19 @@
+program factorial;
+var
+  num: integer;
+  numb2: integer;
+function calculateFactorial(n: integer): integer;
+var
+ x:integer;
+begin
+    numb2:=2;
+    calculateFactorial := 'lol';
+end;
+begin
+  write('Enter a number to calculate its factorial: ');
+  readln(num);
+  x:=3;
+  calculateFactorial(num,numb2);
+  numb2:= calculateFactorial('lol');
+  writeln('Factorial of ', num, ' is ', numb2);
+end.

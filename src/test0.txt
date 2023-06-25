@@ -12,7 +12,6 @@ begin
   nums[3] := true;
   nums[4] := 'lol';
   nums[5] := 10;
-  nums[6] := 'aaa';
   sum := 0;
   mul := 1;
   for i := 1 to 5 do
@@ -26,7 +25,6 @@ begin
     res1:=modulo=divi1;
     res2:=modulo<>divi1;
     res3:= sum < mul;
-
   write(sum);
   saludo := 'hola';
   sal := 'a';

@@ -5,15 +5,16 @@ var
 function calculateFactorial(n: integer): integer;
 var
  x:integer;
+ z:integer;
 begin
     numb2:=2;
+    z:=3;
     calculateFactorial := 'lol';
 end;
 begin
   write('Enter a number to calculate its factorial: ');
   readln(num);
-  x:=3;
-  calculateFactorial(num,numb2);
+  calculateFactorial(num);
   numb2:= calculateFactorial('lol');
   writeln('Factorial of ', num, ' is ', numb2);
 end.

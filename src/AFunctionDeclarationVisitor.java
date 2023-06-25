@@ -17,8 +17,8 @@ public class AFunctionDeclarationVisitor extends MiniPascalBaseVisitor<AFunction
         AFunctionBlockVisitor functionBlockVisitor = new AFunctionBlockVisitor();
         AFunctionBlockNode functionBlockNode = functionBlockVisitor.visit(ctx.function_block());
         AFunctionDeclarationNode functionDeclarationNode = new AFunctionDeclarationNode(functionKeyword,identifierKeyword,identifierLParent,parameterListNode,identifierRParent,identifierColon,parameterTypeNode,identifierSemicolon,functionBlockNode);
-        functionDeclarationNode.setStartToken(ctx.getStart());
         symbolTable.exitScope();
+        functionDeclarationNode.setStartToken(ctx.getStart());
         return functionDeclarationNode;
     }
 }

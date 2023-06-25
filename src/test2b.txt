@@ -8,4 +8,5 @@ begin
     num:= 3;
     str:= 'l';
     num2:= 'lol';
+    num3:=1;
 end.

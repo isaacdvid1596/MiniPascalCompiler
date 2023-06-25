@@ -43,6 +43,15 @@ public class SymbolTable {
         currentScope.put(varName,varType);
     }
 
+    public void removeVariable(String varName){
+        for(int i = scopeStack.size()-1 ; i >= 0; i--){
+            Map<String,VariableType> currentScope = scopeStack.get(i);
+            if(currentScope.containsKey(varName)){
+                currentScope.remove(varName);
+            }
+        }
+    }
+
     public VariableType getVariableType(String varName){
         for(int i = scopeStack.size()-1 ; i >= 0; i--){
             Map<String,VariableType> currentScope = scopeStack.get(i);

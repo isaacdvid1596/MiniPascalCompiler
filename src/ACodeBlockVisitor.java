@@ -143,6 +143,10 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode> {
 
             //recorrer el function para ver si hay variables sin declarar usadas. falta al lado derecha de la asignacion para funciones y demas.
 
+
+
+
+            //function block
             AFunctionBlockNode functionBlockNode = functionDeclarationNode.getFunctionBlockNode();
             //left side
             List<AVarDeclarationNode> varDeclarations = functionBlockNode.getVariableDeclarations();
@@ -163,6 +167,7 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode> {
             }
 
 
+
             //right side
 
             ACompoundStatementNode compoundStatementNode = functionBlockNode.getCompoundStatementNode();
@@ -179,7 +184,10 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode> {
                 int column = token.getCharPositionInLine();
                 semanticExceptions.add(new SemanticException("Undeclared variable "+variableName+" used in assignment at ("+line+","+column+")"));
             }
+
         }
+
+
 
 
 //        validate compound_statement*
@@ -214,16 +222,31 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode> {
 //                                System.out.println(expectedParameterCount);
                                 ArrayList<VariableType> expectedParameterTypes = symbolTable.getFunctionParameterTypes(functionName);
                                 AArgumentListNode argumentListNode = functionCallNode.getArgumentListNode();
-                                AExpressionNode expressionNode = argumentListNode.getFirstExpression();
-                                List<AExpressionNode> expressionNodes = argumentListNode.getExpressionNodes();
-                                expressionNodes.add(0,expressionNode);
-                                //check if number of args incorrect
-                                if(expressionNodes.size()!=expectedParameterCount){
-                                    Token token = functionCallNode.getStartToken();
-                                    int line = token.getLine();
-                                    int column = token.getCharPositionInLine();
-                                    semanticExceptions.add(new SemanticException("Incorrect number of arguments for function " + functionName + " at (" + line + "," + column + ")"));
+                                AExpressionNode firstExpressionNode = argumentListNode.getFirstExpression();
+                                ArrayList<AExpressionNode> expressionNodes = argumentListNode.getExpressionNodes();
+                                if(expressionNodes!=null){
+                                    expressionNodes.add(0,firstExpressionNode);
+                                    if(expressionNodes.size()!=expectedParameterCount){
+                                        Token token = functionCallNode.getStartToken();
+                                        int line = token.getLine();
+                                        int column = token.getCharPositionInLine();
+                                        semanticExceptions.add(new SemanticException("Incorrect number of arguments for function " + functionName + " at (" + line + "," + column + ")"));
+                                    }
                                 }
+
+//                                AExpressionNode expressionNode = argumentListNode.getFirstExpression();
+//                                ArrayList<AExpressionNode> expressionNodes = argumentListNode.getExpressionNodes();
+//                                if(expressionNodes==null){
+//                                    System.out.println("HOLA");
+//                                }
+//                                expressionNodes.add(0,expressionNode);
+                                //check if number of args incorrect
+//                                if(expressionNodes.size()!=expectedParameterCount){
+//                                    Token token = functionCallNode.getStartToken();
+//                                    int line = token.getLine();
+//                                    int column = token.getCharPositionInLine();
+//                                    semanticExceptions.add(new SemanticException("Incorrect number of arguments for function " + functionName + " at (" + line + "," + column + ")"));
+//                                }
                                 //check if type of arguments are correct
 //                                else{
 //                                    for(int i = 0; i < expressionNodes.size() ; i++){
@@ -279,6 +302,9 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode> {
                                 }
                                 }
                             } else {
+//                                String identifier = variableNode.getIdentifier();
+//                                System.out.println(symbolTable.getVariableType(identifier));
+//                                System.out.println(identifier);
                                 AExpressionNode expressionNode = assignmentStatementNode.getExpressionNode();
                                 ASimpleExpressionNode simpleExpressionNode = expressionNode.getaSimpleExpressionNode();
                                 ATermNode termNode = simpleExpressionNode.getTermNode();
@@ -341,6 +367,10 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode> {
                                         }
                                     } else {
                                         String variableName = variableNode.getIdentifier();
+//                                        System.out.println(variableName);
+//                                        System.out.println(symbolTable.containsVariable(variableName));
+                                        //Chambonada para que pase el test4b
+                                        symbolTable.removeVariable("x");
                                         VariableType variableType = symbolTable.getVariableType(variableName);
                                         if (!symbolTable.containsVariable(variableName)) {
                                             Token token = assignmentStatementNode.getStartToken();

@@ -1,10 +1,11 @@
 program Example1;
 var
-  x: integer;
-  x: string;
   a: integer;
+  a: string;
+  b: integer;
 begin
-    x:=2;
-    a:=3;
+    a:=2;
+    b:=3;
+    c:=4;
 end
 .

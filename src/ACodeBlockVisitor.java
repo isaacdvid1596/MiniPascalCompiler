@@ -144,6 +144,27 @@ public class ACodeBlockVisitor extends MiniPascalBaseVisitor<ACodeBlockNode> {
             //recorrer el function para ver si hay variables sin declarar usadas. falta al lado derecha de la asignacion para funciones y demas.
 
             AFunctionBlockNode functionBlockNode = functionDeclarationNode.getFunctionBlockNode();
+            //left side
+            List<AVarDeclarationNode> varDeclarations = functionBlockNode.getVariableDeclarations();
+            ArrayList<AVariableDeclarationNode> variableDeclarationNodes = null;
+            if(varDeclarations!=null){
+                for (AVarDeclarationNode varDeclaration : varDeclarations) {
+                    variableDeclarationNodes = varDeclaration.getVariableDeclarations();
+                }
+                if(variableDeclarationNodes!=null){
+                    for (AVariableDeclarationNode variableDeclarationNode : variableDeclarationNodes) {
+                        String identifier = variableDeclarationNode.getIdentifier();
+                        VariableType variableType = variableDeclarationNode.getVariableType();
+//                        System.out.println(identifier);
+//                        System.out.println(variableType);
+                        symbolTable.addVariable(identifier,variableType);
+                    }
+                }
+            }
+
+
+            //right side
+
             ACompoundStatementNode compoundStatementNode = functionBlockNode.getCompoundStatementNode();
             AStatementListNode statementListNode = compoundStatementNode.getStatementListNode();
             AStatementNode statementNode = statementListNode.getStatementNode();

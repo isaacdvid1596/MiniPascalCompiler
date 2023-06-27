@@ -10,4 +10,9 @@ public class AVarDeclarationNode {
         this.variableDeclarations = variableDeclarations;
         this.semiColon = semiColon;
     }
+
+    public ArrayList<AVariableDeclarationNode> getVariableDeclarations() {
+        return variableDeclarations;
+    }
+
 }

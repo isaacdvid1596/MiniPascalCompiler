@@ -1,0 +1,12 @@
+program Example3;
+var
+num:integer;
+realnum:real;
+num2:integer;
+num3:real;
+str:string;
+begin
+    num:= 3;
+    num2:=3.14;
+    realnum:=3.15;
+end.

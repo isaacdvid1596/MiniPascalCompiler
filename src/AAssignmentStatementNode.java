@@ -1,8 +1,11 @@
+import org.antlr.v4.runtime.Token;
+
 public class AAssignmentStatementNode extends AStatementNode{
     private AVariableNode variableNode;
     private String assignOperator;
     private AExpressionNode expressionNode;
     private AFunctionCallNode functionCallNode;
+    private Token startToken;
 
     public AAssignmentStatementNode(AVariableNode variableNode, String assignOperator, AExpressionNode expressionNode) {
         this.variableNode = variableNode;
@@ -15,4 +18,32 @@ public class AAssignmentStatementNode extends AStatementNode{
         this.assignOperator = assignOperator;
         this.functionCallNode = functionCallNode;
     }
+
+    public AExpressionNode getExpressionNode() {
+        return expressionNode;
+    }
+
+    public AVariableNode getVariableNode() {
+        return variableNode;
+    }
+
+    public boolean hasFunctionCall(){
+        if(this.functionCallNode !=null){
+            return true;
+        }
+        return false;
+    }
+
+    public AFunctionCallNode getFunctionCallNode() {
+        return functionCallNode;
+    }
+
+    public void setStartToken(Token token){
+        this.startToken = token;
+    }
+
+    public Token getStartToken() {
+        return this.startToken;
+    }
+
 }

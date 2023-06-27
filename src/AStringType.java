@@ -1,11 +1,7 @@
 public class AStringType extends ATypeNode{
-    @Override
-    public String toString() {
-        return "string";
-    }
+    private String string;
 
-    @Override
-    public <T> T accept(AVisitor<T> visitor) {
-        return visitor.visit(this);
+    public AStringType(String string) {
+        this.string = string;
     }
 }

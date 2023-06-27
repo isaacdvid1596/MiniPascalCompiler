@@ -1,18 +1,27 @@
-public class AProgramVisitor extends MiniPascalBaseVisitor<AProgramNode>{
+import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
 
-    AProgramNode programNode;
+import java.util.ArrayList;
+
+public class AProgramVisitor extends MiniPascalBaseVisitor<AProgramNode>{
+    private SymbolTable symbolTable = SymbolTable.getInstance();
+    private ArrayList<SemanticException> semanticExceptions = new ArrayList<>();
 
     @Override
     public AProgramNode visitProgram(MiniPascalParser.ProgramContext ctx) {
         String programKeyword = ctx.PROGRAM().getText();
         String name = ctx.IDENTIFIER().getText();
-//        ACodeBlockNode codeBlock = visitCodeBlockHelper(ctx.code_block());
+        String semicolon = ctx.SEMICOLON().getText();
+
+        symbolTable.enterScope();
+
         ACodeBlockVisitor blockVisitor = new ACodeBlockVisitor();
         ACodeBlockNode codeBlock = blockVisitor.visit(ctx.code_block());
-        return new AProgramNode(programKeyword, name,codeBlock);
+
+        symbolTable.exitScope();
+
+        AProgramNode programNode = new AProgramNode(programKeyword, name, semicolon,codeBlock);
+
+        return programNode;
     }
-//    public ACodeBlockNode visitCodeBlockHelper(MiniPascalParser.Code_blockContext ctx) {
-//        CodeBlockVisitor blockVisitor = new CodeBlockVisitor();
-//        return blockVisitor.visit(ctx);
-//    }
 }

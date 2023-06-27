@@ -1,2 +1,3 @@
-public class AFactorNode {
+public abstract class AFactorNode {
+
 }

@@ -3,7 +3,7 @@ import java.util.List;
 
 public class ASimpleExpressionNode {
     private ATermNode termNode;
-    private ArrayList<AAddOperator> addOperators;
+    private ArrayList<AAddOperatorNode> addOperators;
     private List<String> orKeyword;
     private ArrayList<ATermNode> termNodes;
 
@@ -11,7 +11,7 @@ public class ASimpleExpressionNode {
         this.termNode = termNode;
     }
 
-    public ASimpleExpressionNode(ATermNode termNode, ArrayList<AAddOperator> addOperators, ArrayList<ATermNode> termNodes) {
+    public ASimpleExpressionNode(ATermNode termNode, ArrayList<AAddOperatorNode> addOperators, ArrayList<ATermNode> termNodes) {
         this.termNode = termNode;
         this.addOperators = addOperators;
         this.termNodes = termNodes;
@@ -21,5 +21,13 @@ public class ASimpleExpressionNode {
         this.termNode = termNode;
         this.orKeyword = orKeyword;
         this.termNodes = termNodes;
+    }
+
+    public ATermNode getTermNode() {
+        return termNode;
+    }
+
+    public ArrayList<ATermNode> getTermNodes() {
+        return termNodes;
     }
 }

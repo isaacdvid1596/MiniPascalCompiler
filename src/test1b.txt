@@ -1,0 +1,11 @@
+program Example1;
+var
+  a: integer;
+  a: string;
+  b: integer;
+begin
+    a:=2;
+    b:=3;
+    c:=4;
+end
+.

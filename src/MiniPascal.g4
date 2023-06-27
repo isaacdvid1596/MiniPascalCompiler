@@ -8,16 +8,16 @@ var_declaration : VAR (variable_declaration SEMICOLON)* #VarDeclaration
 ;
 variable_declaration : IDENTIFIER COLON type (array_specifier)?
 ;
-array_specifier : ARRAY LBRACKET index_range RBRACKET OF type#ArraySpecifier
+array_specifier : ARRAY LBRACKET index_range RBRACKET OF type #ArraySpecifier
 ;
 index_range : NUMBER DOTDOT NUMBER #IndexRange
 ;
-type : INTEGER    #Integer
-        | REAL    #Real
-        | BOOLEAN #Boolean
-        | CHAR    #Char
-        | STRING  #String
-        | array_specifier#Array
+type : INTEGER   
+        | REAL    
+        | BOOLEAN 
+        | CHAR    
+        | STRING  
+        | array_specifier
         ;
 compound_statement : BEGIN statement_list END* #CompountStatement
 ;
@@ -65,16 +65,16 @@ simple_expression : term ((addop | OR) term)* #SimpleExpression
 ;
 term : factor (mulop factor)* #Termino
 ;
-identifier_terminal: IDENTIFIER (index_access | function_call | LPAREN expression RPAREN | (NOT factor))?
+identifier_terminal: IDENTIFIER (index_access | function_call | LPAREN expression RPAREN | (NOT factor))? #IdentifierTerminal
 ;
-factor : identifier_terminal #IdentifierTerminal
-        | NUMBER                #NumberTerminal
-        | STRINGLITERAL               #StringTerminal
-        | CHARACTER                  #CharTerminal
-        | LPAREN expression RPAREN    #BetweenParentsExpression
-        | NOT factor          #NotFactorOperator
-        | TRUE                #TrueOperator
-        | FALSE               #FalseOperator
+factor : identifier_terminal 
+        | NUMBER                
+        | STRINGLITERAL               
+        | CHARACTER                  
+        | LPAREN expression RPAREN    
+        | NOT factor          
+        | TRUE                
+        | FALSE              
         ;
 variable : IDENTIFIER (index_access)? #VariableNonTerminal
 ;

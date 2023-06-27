@@ -13,4 +13,8 @@ public class ACompoundStatementNode extends AStatementNode{
         this.beginKeyword = beginKeyword;
         this.statementList = statementList;
     }
+
+    public AStatementListNode getStatementListNode() {
+        return statementList;
+    }
 }

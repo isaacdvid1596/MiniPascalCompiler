@@ -14,4 +14,12 @@ public class AArgumentListNode {
         this.delimiters = delimiters;
         this.aExpressionNodes = aExpressionNodes;
     }
+
+    public AExpressionNode getFirstExpression() {
+        return firstExpression;
+    }
+
+    public ArrayList<AExpressionNode> getExpressionNodes() {
+        return aExpressionNodes;
+    }
 }

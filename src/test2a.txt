@@ -1,0 +1,12 @@
+program Example2;
+var
+num:integer;
+num2:integer;
+num3:real;
+str:string;
+begin
+    num:= 3;
+    str:= 'lel';
+    num2:= 69;
+    num3:= 1.11;
+end.

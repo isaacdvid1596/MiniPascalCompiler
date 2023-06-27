@@ -1,11 +1,7 @@
 public class ABooleanType extends ATypeNode{
-    @Override
-    public String toString() {
-        return "boolean";
-    }
+    private String bool;
 
-    @Override
-    public <T> T accept(AVisitor<T> visitor) {
-        return visitor.visit(this);
+    public ABooleanType(String bool) {
+        this.bool = bool;
     }
 }
